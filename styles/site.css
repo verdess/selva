@@ -1,0 +1,110 @@
+/* Selva Studio — site-level styles (on top of colors_and_type.css). */
+
+@import url('./colors_and_type.css');
+
+html, body { margin:0; padding:0; background: var(--bg); color: var(--fg-1); }
+* { box-sizing: border-box; }
+body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; }
+
+/* Grain overlay — applied to hero surfaces */
+.grain::after {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  opacity: 0.18;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='11'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.4 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size: 240px 240px;
+  animation: grainShift 1.6s steps(2) infinite;
+}
+@keyframes grainShift {
+  0%   { transform: translate(0,0); }
+  25%  { transform: translate(-3%, 2%); }
+  50%  { transform: translate(2%,-2%); }
+  75%  { transform: translate(-1%, 3%); }
+  100% { transform: translate(0,0); }
+}
+
+/* Paper linen for light mode surfaces */
+.linen {
+  background-color: var(--bg-paper);
+  background-image:
+    radial-gradient(rgba(4,7,7,0.04) 1px, transparent 1px),
+    radial-gradient(rgba(4,7,7,0.02) 1px, transparent 1px);
+  background-size: 3px 3px, 7px 7px;
+  background-position: 0 0, 2px 2px;
+}
+
+/* --- Mode (light / dark) --- */
+body[data-mode="light"] {
+  --bg: var(--bg-paper);
+  --bg-elev: var(--nuez-100);
+  --bg-soft: var(--nuez-300);
+  --fg-1: var(--negro);
+  --fg-2: #403e38;
+  --fg-3: #6a6860;
+  --border: rgba(4,7,7,0.14);
+  --border-strong: rgba(4,7,7,0.28);
+  --hairline: rgba(4,7,7,0.08);
+}
+
+/* --- Accent (rosa / vino / olivo) --- */
+body[data-accent="rosa"]   { --accent: var(--rosa); }
+body[data-accent="vino"]   { --accent: var(--vino); }
+body[data-accent="olivo"]  { --accent: var(--olivo); }
+
+/* Small caps label reuse */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+}
+
+.hairline {
+  display: inline-block; width: 56px; height: 1px;
+  background: currentColor; opacity: 0.5; vertical-align: middle;
+}
+
+/* Page transition — fade between pages */
+.page-fade { animation: pageFade 320ms ease-out both; }
+@keyframes pageFade {
+  0%   { opacity: 0; transform: translateY(6px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Film-strip edge marks (decorative) */
+.filmstrip {
+  background-image:
+    linear-gradient(90deg, transparent 49%, rgba(244,240,230,0.08) 49%, rgba(244,240,230,0.08) 51%, transparent 51%),
+    linear-gradient(0deg, rgba(244,240,230,0.04), rgba(244,240,230,0.04));
+  background-size: 18px 100%, 100% 100%;
+}
+
+/* Selectable text link with hairline underline */
+.underline-hairline {
+  position: relative; padding-bottom: 3px;
+  border-bottom: 1px solid currentColor;
+  transition: border-color 200ms ease-out, opacity 200ms;
+}
+.underline-hairline:hover { opacity: 0.75; }
+
+/* Hide scrollbars in horizontal cinema strip */
+.no-scrollbar::-webkit-scrollbar { display:none; }
+.no-scrollbar { scrollbar-width: none; }
+
+/* Utility — reveal on scroll (via IntersectionObserver in main.jsx) */
+.reveal { opacity: 0; transform: translateY(10px); transition: opacity 600ms ease-out, transform 600ms ease-out; }
+.reveal.is-in { opacity: 1; transform: translateY(0); }
+
+/* Brand sparkle — for occasional dividers */
+.sparkle { color: var(--accent); display:inline-block; }
+
+/* Mobile menu overlay slide-in */
+.mmenu { transform: translateX(100%); transition: transform 420ms cubic-bezier(.7,.05,.2,1); }
+.mmenu[data-open="1"] { transform: translateX(0); }

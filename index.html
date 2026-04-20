@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Selva Studio — Casa productora cinematográfica CDMX · Roma Norte</title>
+  <meta name="description" content="Selva Studio es una casa productora con 18 años de trayectoria en la Ciudad de México. Cine para marcas — comerciales, brand films, Content Day, post-producción y digital desde Roma Norte." />
+
+  <!-- Hreflang -->
+  <link rel="alternate" hreflang="es-MX" href="https://selvastudio.mx/" />
+  <link rel="alternate" hreflang="en-US" href="https://selvastudio.mx/en/" />
+  <link rel="alternate" hreflang="x-default" href="https://selvastudio.mx/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Selva Studio — Casa productora CDMX" />
+  <meta property="og:description" content="Cine para marcas. Dieciocho años filmando memoria desde Roma Norte." />
+  <meta property="og:locale" content="es_MX" />
+  <meta property="og:locale:alternate" content="en_US" />
+
+  <!-- JSON-LD Organization + LocalBusiness -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Selva Studio",
+    "legalName": "Selva Profunda Studio, SA de CV",
+    "image": "https://selvastudio.mx/og.jpg",
+    "url": "https://selvastudio.mx",
+    "telephone": "+52 55 1959 6185",
+    "email": "axel@selvastudio.mx",
+    "foundingDate": "2007",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Puebla 403",
+      "addressLocality": "Cuauhtémoc",
+      "addressRegion": "CDMX",
+      "postalCode": "06700",
+      "addressCountry": "MX"
+    },
+    "geo": { "@type": "GeoCoordinates", "latitude": 19.4199, "longitude": -99.1599 },
+    "sameAs": ["https://instagram.com/selvastudiomx"]
+  }
+  </script>
+
+  <!-- Google Fonts fallback (Dela Gothic One is local) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles/site.css" />
+
+  <style>
+    /* Design surface — lets layout go edge-to-edge in preview but still breathable on huge monitors */
+    html, body { background: var(--bg); color: var(--fg-1); min-height: 100vh; }
+    #app { min-height: 100vh; }
+    ::selection { background: var(--accent, var(--rosa)); color: var(--negro); }
+
+    /* Inline links inside long-form article prose */
+    .article-prose a {
+      color: var(--accent, var(--rosa));
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+      text-decoration-color: color-mix(in oklab, var(--accent, var(--rosa)) 55%, transparent);
+      transition: text-decoration-color 180ms ease, color 180ms ease;
+    }
+    .article-prose a:hover {
+      text-decoration-color: var(--accent, var(--rosa));
+    }
+  </style>
+</head>
+<body data-mode="dark" data-accent="rosa">
+  <div id="app"></div>
+
+  <!-- Data -->
+  <script src="data.js"></script>
+
+  <!-- React + Babel -->
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <!-- Shared components (Header, Footer, PosterThumb, TweaksPanel, etc.) -->
+  <script type="text/babel" src="components/Shell.jsx"></script>
+
+  <!-- Pages -->
+  <script type="text/babel" src="pages/Home.jsx"></script>
+  <script type="text/babel" src="pages/Work.jsx"></script>
+  <script type="text/babel" src="pages/Project.jsx"></script>
+  <script type="text/babel" src="pages/Pages.jsx"></script>
+
+  <!-- App -->
+  <script type="text/babel">
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "lang": "es",
+      "mode": "dark",
+      "accent": "rosa",
+      "heroTreatment": "stills",
+      "workDensity": "asymmetric",
+      "manifesto": "v1",
+      "hero": "video",
+      "workGrid": "asym"
+    }/*EDITMODE-END*/;
+
+    function App() {
+      const [tweaks, setTweaks] = React.useState(() => {
+        try {
+          const saved = localStorage.getItem("selva.tweaks");
+          return saved ? { ...TWEAK_DEFAULTS, ...JSON.parse(saved) } : TWEAK_DEFAULTS;
+        } catch { return TWEAK_DEFAULTS; }
+      });
+      const [route, setRoute] = React.useState(() => {
+        try { return JSON.parse(localStorage.getItem("selva.route") || "null") || { page: "home" }; }
+        catch { return { page: "home" }; }
+      });
+      const [menuOpen, setMenuOpen] = React.useState(false);
+      const [tweaksOpen, setTweaksOpen] = React.useState(false);
+      const [editModeActive, setEditModeActive] = React.useState(false);
+
+      // Persist route + tweaks
+      React.useEffect(() => {
+        try { localStorage.setItem("selva.route", JSON.stringify(route)); } catch {}
+        window.scrollTo({ top: 0, behavior: "instant" });
+      }, [route]);
+      React.useEffect(() => {
+        try { localStorage.setItem("selva.tweaks", JSON.stringify(tweaks)); } catch {}
+        document.body.setAttribute("data-mode", tweaks.mode || "dark");
+        document.body.setAttribute("data-accent", tweaks.accent || "rosa");
+        document.documentElement.setAttribute("lang", tweaks.lang || "es");
+      }, [tweaks]);
+
+      // Edit mode handshake
+      React.useEffect(() => {
+        function handle(e) {
+          if (!e.data || typeof e.data !== "object") return;
+          if (e.data.type === "__activate_edit_mode") { setEditModeActive(true); setTweaksOpen(true); }
+          if (e.data.type === "__deactivate_edit_mode") { setEditModeActive(false); setTweaksOpen(false); }
+        }
+        window.addEventListener("message", handle);
+        try { window.parent.postMessage({ type: "__edit_mode_available" }, "*"); } catch {}
+        return () => window.removeEventListener("message", handle);
+      }, []);
+
+      const go = (page, params = {}) => { setRoute({ page, ...params }); setMenuOpen(false); };
+      const openProject = (id) => go("project", { id });
+      const openDirector = (id) => go("director", { id });
+      const openArticle = (id) => go("article", { id });
+
+      const lang = tweaks.lang;
+
+      let PageEl;
+      switch (route.page) {
+        case "home":       PageEl = <Home tweaks={tweaks} go={go} openProject={openProject} openArticle={openArticle} lang={lang} />; break;
+        case "work":       PageEl = <WorkPage lang={lang} openProject={openProject} tweaks={tweaks} />; break;
+        case "project":    PageEl = <ProjectPage id={route.id} lang={lang} openProject={openProject} go={go} />; break;
+        case "directors":  PageEl = <DirectorsPage lang={lang} openDirector={openDirector} />; break;
+        case "director":   PageEl = <DirectorPage id={route.id} lang={lang} openProject={openProject} openDirector={openDirector} go={go} />; break;
+        case "studio":     PageEl = <StudioPage lang={lang} />; break;
+        case "content-day":PageEl = <ContentDayPage lang={lang} go={go} openProject={openProject} />; break;
+        case "services":   PageEl = <ServicesPage lang={lang} go={go} openProject={openProject} />; break;
+        case "journal":    PageEl = <JournalPage lang={lang} openArticle={openArticle} />; break;
+        case "article":    PageEl = <ArticlePage id={route.id} lang={lang} openArticle={openArticle} go={go} />; break;
+        case "contact":    PageEl = <ContactPage lang={lang} />; break;
+        default:           PageEl = <NotFoundPage lang={lang} go={go} />;
+      }
+
+      return (
+        <React.Fragment>
+          <Header
+            page={route.page}
+            go={go}
+            lang={lang}
+            onLang={(v) => setTweaks({ ...tweaks, lang: v })}
+            onOpenMenu={() => setMenuOpen(true)}
+            onOpenTweaks={() => setTweaksOpen(true)}
+            accent={tweaks.accent}
+            mode={tweaks.mode}
+          />
+          <main key={route.page + (route.id || "")}>{PageEl}</main>
+          <Footer lang={lang} go={go} onLang={(v) => setTweaks({ ...tweaks, lang: v })} />
+
+          <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} go={go} page={route.page} lang={lang} onLang={(v) => setTweaks({ ...tweaks, lang: v })} />
+          <TweaksPanel open={tweaksOpen} onClose={() => setTweaksOpen(false)} tweaks={tweaks} setTweaks={setTweaks} />
+        </React.Fragment>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("app"));
+    root.render(<App />);
+  </script>
+</body>
+</html>
