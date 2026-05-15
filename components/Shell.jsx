@@ -225,7 +225,7 @@ const burgerLineStyle = `
 function MobileMenu({ open, onClose, go, page, lang, onLang }) {
   const nav = window.SELVA_DATA.copy.nav;
   return (
-    <div className="mmenu" data-open={open ? "1" : "0"} style={mm.root} aria-hidden={!open}>
+    <div className="mmenu" data-open={open ? "1" : "0"} style={mm.root} aria-hidden={!open} inert={!open ? "" : undefined}>
       <div style={mm.top}>
         <span className="eyebrow" style={{color:"var(--fg-2)"}}>Selva · CDMX</span>
         <button onClick={onClose} style={mm.close} aria-label="Close">✕</button>
