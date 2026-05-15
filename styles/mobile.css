@@ -1,10 +1,80 @@
-/* Selva Studio — mobile adjustments
-   Keeps desktop identical; below 900px collapses grids and reduces padding.
-   Uses attribute selectors + !important so it can override JSX inline styles. */
+/* Selva Studio - mobile adjustments
+   Desktop stays identical above 900px. Below 900px we:
+   - collapse grids to single column
+   - reduce padding & font sizes
+   - show the mobile menu burger
+   - prevent text overflow */
 
+/* ============================================================
+   ROOT: prevent horizontal overflow site-wide on mobile
+   ============================================================ */
 @media (max-width: 900px) {
-  /* ---------- Generic grid collapse ----------
-     Force any multi-col inline grid down to one column on phones. */
+  html, body {
+    overflow-x: hidden !important;
+  }
+  body, body * {
+    /* Allow long words to break instead of pushing layout */
+    overflow-wrap: anywhere !important;
+    word-break: normal !important;
+  }
+  img, video, iframe {
+    max-width: 100% !important;
+  }
+
+  /* ============================================================
+     HEADER & MENU
+     The desktop header has its own @media(max-width:1200px) that hides
+     .desktop-only and shows .mobile-only. We need to make sure the burger
+     button is actually visible (white lines on dark hero) and tappable.
+     ============================================================ */
+  header[data-mode] {
+    padding: 14px 20px !important;
+  }
+  header[data-mode] [style*="grid-template-columns:1fr auto 1fr"],
+  header[data-mode] [style*="grid-template-columns: 1fr auto 1fr"] {
+    grid-template-columns: auto 1fr !important;
+    gap: 12px !important;
+  }
+  /* The burger button: 3 spans need explicit color + size */
+  header button[aria-label="Menu"] {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    width: 28px !important;
+    height: 20px !important;
+    padding: 4px 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    cursor: pointer !important;
+    margin-left: auto !important;
+  }
+  header button[aria-label="Menu"] > span {
+    display: block !important;
+    width: 100% !important;
+    height: 1.5px !important;
+    background: var(--nuez, #F4F0E6) !important;
+    border-radius: 1px !important;
+  }
+  /* Logo never shrinks */
+  header img[alt="Selva Studio"] {
+    height: 26px !important;
+    width: auto !important;
+  }
+
+  /* Mobile menu overlay - already a fixed inset:0 panel in the JS, just
+     give the links comfy hit targets and a clean stack */
+  .mmenu {
+    padding: 20px 24px !important;
+  }
+  .mmenu nav a {
+    font-size: clamp(28px, 8vw, 42px) !important;
+    line-height: 1.1 !important;
+    padding: 8px 0 !important;
+  }
+
+  /* ============================================================
+     GRID COLLAPSE - everything to single column
+     ============================================================ */
   [style*="grid-template-columns:repeat(4"],
   [style*="grid-template-columns: repeat(4"],
   [style*="grid-template-columns:repeat(3"],
@@ -13,14 +83,22 @@
   [style*="grid-template-columns: repeat(2"],
   [style*="grid-template-columns:1fr 1fr"],
   [style*="grid-template-columns: 1fr 1fr"],
+  [style*="grid-template-columns:1.1fr 1fr"],
+  [style*="grid-template-columns:1.3fr 1fr"],
+  [style*="grid-template-columns:1.4fr 1fr"],
+  [style*="grid-template-columns: 1.1fr 1fr"],
+  [style*="grid-template-columns: 1.3fr 1fr"],
+  [style*="grid-template-columns: 1.4fr 1fr"],
+  [style*="grid-template-columns:80px 1fr 320px"],
+  [style*="grid-template-columns: 80px 1fr 320px"],
+  [style*="grid-template-columns:140px 1fr"],
   [style*="grid-template-columns:repeat(12"],
-  [style*="grid-template-columns: repeat(12"] {
+  [style*="grid-template-columns: repeat(12"],
+  [style*="grid-template-columns:minmax"],
+  [style*="grid-template-columns: minmax"] {
     grid-template-columns: 1fr !important;
     gap: 24px !important;
   }
-
-  /* Work asymmetric grid uses `gridColumn: "span N"` per cell on a 12-col parent
-     — once parent collapses, force each tile to single column. */
   [style*="grid-column: span"],
   [style*="grid-column:span"] {
     grid-column: 1 / -1 !important;
@@ -31,71 +109,74 @@
     grid-row: auto !important;
   }
 
-  /* ---------- Header / nav ---------- */
-  header[data-mode] [style*="grid-template-columns:1fr auto 1fr"],
-  header[data-mode] [style*="grid-template-columns: 1fr auto 1fr"] {
-    grid-template-columns: auto 1fr !important;
-    gap: 12px !important;
-  }
-  header[data-mode] {
-    padding: 12px 20px !important;
-  }
-
-  /* ---------- Section padding ----------
-     Reduce the 40-80px horizontal padding used everywhere on desktop. */
-  section[style*="padding:120px 40px"],
-  section[style*="padding: 120px 40px"],
-  section[style*="padding:140px 40px"],
-  section[style*="padding: 140px 40px"],
-  section[style*="padding:160px 40px"],
-  section[style*="padding:100px 40px"],
-  section[style*="padding: 100px 40px"],
-  section[style*="padding:80px 40px"],
-  section[style*="padding: 80px 40px"],
-  section[style*="padding:60px 40px"],
-  section[style*="padding: 60px 40px"],
-  section[style*="padding:40px 40px"] {
+  /* ============================================================
+     SECTION PADDING - reduce all 40px+ horizontal padding to 20px
+     ============================================================ */
+  section[style*=" 40px"],
+  section[style*=":40px"] {
     padding-left: 20px !important;
     padding-right: 20px !important;
   }
-  /* Trim the very deep top paddings too */
-  section[style*="padding:160px"] { padding-top: 80px !important; padding-bottom: 80px !important; }
-  section[style*="padding:140px"] { padding-top: 72px !important; padding-bottom: 72px !important; }
-  section[style*="padding:120px"] { padding-top: 64px !important; padding-bottom: 64px !important; }
+  section[style*="padding:160px"] { padding-top: 72px !important; padding-bottom: 72px !important; }
+  section[style*="padding:140px"] { padding-top: 64px !important; padding-bottom: 64px !important; }
+  section[style*="padding:120px"] { padding-top: 56px !important; padding-bottom: 56px !important; }
+  section[style*="padding:100px"] { padding-top: 48px !important; padding-bottom: 48px !important; }
+  section[style*="padding:80px"]  { padding-top: 40px !important; padding-bottom: 40px !important; }
 
-  /* ---------- Hero ---------- */
-  /* Hero section in Studio etc. that uses a 2-col grid is collapsed above.
-     Hide the right-side card preview when there isn't enough room. */
-  /* (Kept — looks fine stacked. Reduce its aspect to be friendlier.) */
-  [style*="aspect-ratio:4/3"][class~="grain"] {
+  /* ============================================================
+     TYPOGRAPHY - cap oversized display titles on mobile
+     Most use clamp(...) but min values are still too big for narrow screens.
+     ============================================================ */
+  h1, h2, h3 {
+    overflow-wrap: anywhere !important;
+    hyphens: auto !important;
+  }
+  h1 { font-size: clamp(28px, 8vw, 48px) !important; }
+  h2 { font-size: clamp(24px, 7vw, 40px) !important; }
+  h3 { font-size: clamp(20px, 5.5vw, 32px) !important; }
+
+  /* ============================================================
+     HERO - reduce min-heights, fix poster
+     ============================================================ */
+  [style*="min-height:680"],
+  [style*="minHeight:680"],
+  [style*="minHeight: 680"] {
+    min-height: 480px !important;
+  }
+  [style*="aspect-ratio:4/3"][class~="grain"],
+  [style*="aspectRatio:4/3"][class~="grain"] {
     aspect-ratio: 16/10 !important;
   }
 
-  /* ---------- Footer ---------- */
+  /* ============================================================
+     FOOTER
+     ============================================================ */
   footer[class*="linen"] {
-    padding: 56px 20px 32px !important;
+    padding: 48px 20px 28px !important;
+  }
+  footer[class*="linen"] a[href^="mailto:"] {
+    font-size: clamp(28px, 8vw, 48px) !important;
+    word-break: break-all !important;
   }
 
-  /* ---------- Article body ----------
-     Article gallery uses width:min(calc(100vw - 80px),1120px). Tighten its
-     horizontal breathing room on phones. */
+  /* ============================================================
+     ARTICLE
+     ============================================================ */
+  article[style*="padding:40px"] {
+    padding: 24px 16px !important;
+  }
   figure[style*="min(calc(100vw - 80px)"],
   div[style*="min(calc(100vw - 80px)"] {
     width: calc(100vw - 32px) !important;
   }
-
-  /* Article root padding */
-  article[style*="padding:40px"] {
-    padding: 24px 16px !important;
-  }
-
-  /* Article hero / BTS aspect on mobile -> a bit taller */
-  figure[style*="aspect-ratio:16/9"] {
+  figure[style*="aspect-ratio:16/9"],
+  figure[style*="aspectRatio:16/9"] {
     aspect-ratio: 16/10 !important;
   }
 
-  /* ---------- Tweaks panel ----------
-     Keep it visible but smaller. */
+  /* ============================================================
+     TWEAKS PANEL
+     ============================================================ */
   div[style*="position:fixed"][style*="bottom:16px"][style*="right:16px"] {
     width: calc(100vw - 24px) !important;
     bottom: 12px !important;
@@ -105,54 +186,57 @@
     overflow-y: auto !important;
   }
 
-  /* ---------- Drop cap ---------- */
-  /* On phones the Studio drop cap is too tall — let it inline. */
+  /* ============================================================
+     DROP CAP - inline-friendly
+     ============================================================ */
   span[style*="float:left"][style*="var(--rosa)"] {
-    font-size: clamp(48px, 14vw, 72px) !important;
+    font-size: clamp(44px, 12vw, 64px) !important;
     line-height: 0.85 !important;
     margin-right: 10px !important;
+    margin-top: 4px !important;
   }
 
-  /* ---------- Director list rows ----------
-     The big 1fr 1fr split (name | portrait) reads better stacked. */
-  /* Already covered by the generic 1fr 1fr collapse above. */
-
-  /* ---------- Hide decorative rails on small screens ---------- */
+  /* ============================================================
+     DECORATIVE - hide rotated rails on small screens
+     ============================================================ */
   [style*="rotate(-90deg)"] {
     display: none !important;
   }
+  /* Watermark pantera on Journal - shrink/reposition */
+  div[style*="grayscale(1)"] {
+    width: 60vw !important;
+    height: 60vw !important;
+    right: -20% !important;
+    opacity: 0.04 !important;
+  }
 
-  /* ---------- Service pillar items ----------
-     The pillarItems grid (2 cols) collapses to 1 col — already covered. */
-
-  /* ---------- Hero scroll hint ----------
-     Bottom-centered hint can clash with thumbs on small phones; trim. */
+  /* ============================================================
+     HORIZONTAL SCROLL CONTAINERS - cinema strip etc.
+     ============================================================ */
+  div[style*="0 0 720px"] {
+    flex: 0 0 88vw !important;
+  }
+  div[style*="width:720px"] {
+    width: 88vw !important;
+  }
 }
 
+/* ============================================================
+   VERY SMALL PHONES
+   ============================================================ */
 @media (max-width: 560px) {
-  /* Tighter spacing on tiny phones. */
   header[data-mode] {
-    padding: 10px 16px !important;
+    padding: 12px 16px !important;
   }
-  section[style*="padding:160px"],
-  section[style*="padding:140px"],
-  section[style*="padding:120px"],
-  section[style*="padding:100px"] {
+  section[style*=" 40px"],
+  section[style*=":40px"] {
     padding-left: 16px !important;
     padding-right: 16px !important;
   }
-  /* Slight reduction in default border padding for tight phones */
   section[style*="padding-top:96px"] {
-    padding-top: 64px !important;
+    padding-top: 56px !important;
   }
-}
-
-/* ---------- Mobile: never let the page overflow horizontally ---------- */
-@media (max-width: 900px) {
-  html, body {
-    overflow-x: hidden !important;
-  }
-  img, video, iframe {
-    max-width: 100% !important;
-  }
+  /* Even tighter type on tiny phones */
+  h1 { font-size: clamp(24px, 8vw, 36px) !important; }
+  h2 { font-size: clamp(22px, 7vw, 32px) !important; }
 }

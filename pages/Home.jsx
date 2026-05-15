@@ -57,55 +57,45 @@ function HeroReel({ sound, setSound, tweaks, lang }) {
    one tick after mount so the rest of the home renders first; preserves a poster
    frame from vumbnail.com so the user sees a still image immediately. */
 function VimeoBackground({ vimeoId, sound }) {
-  const [mounted, setMounted] = React.useState(false);
   const [ready, setReady] = React.useState(false);
 
-  React.useEffect(() => {
-    // Defer iframe mount slightly so the first paint is the poster, not a
-    // pending network load. Two animation frames is enough to let Home paint.
-    let raf1 = requestAnimationFrame(() => {
-      let raf2 = requestAnimationFrame(() => setMounted(true));
-      return () => cancelAnimationFrame(raf2);
-    });
-    return () => cancelAnimationFrame(raf1);
-  }, []);
-
-  // Vimeo's quality param: start at 540p for fastest first-frame.
-  // The player will auto-bump to higher quality once buffered.
+  // Vimeo background-mode params. Mount the iframe immediately so the network
+  // request starts in parallel with the first paint, not after it. The poster
+  // image sits on top until onLoad fires, then cross-fades to the live video.
   const src =
     `https://player.vimeo.com/video/${vimeoId}` +
     `?background=1&autoplay=1&loop=1&byline=0&title=0&portrait=0&controls=0` +
-    `&muted=${sound ? 0 : 1}&dnt=1&quality=360p&playsinline=1`;
+    `&muted=${sound ? 0 : 1}&dnt=1&quality=540p&playsinline=1`;
   const poster = `https://vumbnail.com/${vimeoId}_large.jpg`;
 
   return (
     <div style={hero.reelStage}>
-      {/* Instant poster, visible until iframe is ready. */}
+      <iframe
+        key={sound ? "on" : "off"}
+        src={src}
+        title="Selva Studio reel"
+        frameBorder="0"
+        allow="autoplay; fullscreen; picture-in-picture"
+        allowFullScreen
+        loading="eager"
+        onLoad={() => setReady(true)}
+        style={{
+          ...hero.videoFrame,
+          opacity: ready ? 1 : 0,
+          transition: "opacity 500ms ease-out",
+        }}
+      />
       <img
         src={poster}
-        alt="Selva Studio reel, poster"
+        alt="Selva Studio reel"
         loading="eager"
         style={{
           ...hero.posterImg,
           opacity: ready ? 0 : 1,
-          transition: "opacity 600ms ease-out",
+          transition: "opacity 500ms ease-out",
+          pointerEvents: "none",
         }}
       />
-      <div style={hero.videoWrap}>
-        {mounted && (
-          <iframe
-            key={sound ? "on" : "off"}
-            src={src}
-            title="Selva Studio reel"
-            frameBorder="0"
-            allow="autoplay; fullscreen; picture-in-picture"
-            allowFullScreen
-            loading="lazy"
-            onLoad={() => setReady(true)}
-            style={hero.videoFrame}
-          />
-        )}
-      </div>
       <div style={hero.vignette} />
       <div style={hero.bottomScrim} />
     </div>
@@ -237,10 +227,20 @@ const hero = {
 
 /* ---------- Fold 2: Manifiesto ---------- */
 function FoldManifesto({ tweaks, lang }) {
-  const m = window.SELVA_DATA.copy.manifestos[tweaks.manifesto || "v1"];
-  const lines = m[lang];
-  // Hide blank second line entry (e.g. v1 has empty second line in some variants).
-  const hasSecond = lines[1] && lines[1].length > 0;
+  const all = window.SELVA_DATA?.copy?.manifestos || {};
+  // Guard: tweaks.manifesto can hold a stale key (e.g. "v4") from a previous
+  // version saved in localStorage. Fall back to v1, then to the first
+  // available manifesto, then to a hardcoded safe value.
+  const key = tweaks?.manifesto;
+  const m =
+    (key && all[key]) ||
+    all.v1 ||
+    Object.values(all)[0] ||
+    { es: ["Cine para marcas.", ""], en: ["Cinema for brands.", ""] };
+  const lines = (m && m[lang]) || m?.es || ["Cine para marcas.", ""];
+  const first = lines[0] || "";
+  const second = lines[1] || "";
+  const hasSecond = second.length > 0;
   return (
     <section style={mf.root}>
       <div style={mf.eyebrow}>
@@ -249,7 +249,7 @@ function FoldManifesto({ tweaks, lang }) {
         <span className="hairline" />
       </div>
       <h2 style={mf.headline}>
-        {lines[0]}{hasSecond && <><br/><span style={{color:"var(--accent)"}}>{lines[1]}</span></>}
+        {first}{hasSecond && <><br/><span style={{color:"var(--accent)"}}>{second}</span></>}
       </h2>
       <div style={mf.markWrap}>
         <img src="assets/logos/pantera-nuez.png" alt="" style={{height:44, opacity:0.5}} />

@@ -113,6 +113,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
+  <!-- DNS/connection warmup for Vimeo (hero reel + project thumbs) -->
+  <link rel="preconnect" href="https://player.vimeo.com" crossorigin />
+  <link rel="preconnect" href="https://i.vimeocdn.com" crossorigin />
+  <link rel="preconnect" href="https://f.vimeocdn.com" crossorigin />
+  <link rel="dns-prefetch" href="https://vumbnail.com" />
+
   <link rel="stylesheet" href="styles/site.css" />
   <link rel="stylesheet" href="styles/mobile.css" />
 
@@ -158,13 +164,45 @@
 
   <!-- App -->
   <script type="text/babel">
+    function ErrorBoundary({ children }) {
+      const [err, setErr] = React.useState(null);
+      // React 18 doesn't expose a hook-based boundary; wrap as a class via
+      // a small inline component but keep state on a ref so we can reset.
+      class CB extends React.Component {
+        constructor(p){ super(p); this.state = { e:null }; }
+        static getDerivedStateFromError(e){ return { e }; }
+        componentDidCatch(e, info){ try { console.error("Selva ErrorBoundary:", e, info); } catch(_){} }
+        reset(){ this.setState({ e:null }); try { localStorage.removeItem("selva.tweaks"); localStorage.removeItem("selva.route"); } catch(_){} window.location.reload(); }
+        render(){
+          if (this.state.e) {
+            return (
+              <div style={{minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", padding:"40px", background:"#040707", color:"#F4F0E6", fontFamily:"system-ui, sans-serif"}}>
+                <div style={{maxWidth:520, textAlign:"center"}}>
+                  <div style={{fontSize:11, letterSpacing:"0.24em", textTransform:"uppercase", color:"#F3AEB4", marginBottom:18}}>Selva Studio</div>
+                  <h1 style={{fontSize:32, lineHeight:1.1, margin:"0 0 16px"}}>Algo se rompió.</h1>
+                  <p style={{fontSize:15, lineHeight:1.55, opacity:0.75, margin:"0 0 28px"}}>
+                    Probablemente quedó guardada una configuración vieja. Recargamos limpio.
+                  </p>
+                  <button onClick={() => this.reset()} style={{background:"transparent", border:"1px solid #F4F0E6", color:"#F4F0E6", padding:"12px 22px", fontSize:11, letterSpacing:"0.22em", textTransform:"uppercase", cursor:"pointer", fontFamily:"inherit"}}>
+                    Recargar
+                  </button>
+                </div>
+              </div>
+            );
+          }
+          return this.props.children;
+        }
+      }
+      return <CB>{children}</CB>;
+    }
+
     const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
       "lang": "es",
       "mode": "dark",
       "accent": "rosa",
       "heroTreatment": "stills",
       "workDensity": "asymmetric",
-      "manifesto": "v4",
+      "manifesto": "v1",
       "hero": "video",
       "workGrid": "regular"
     }/*EDITMODE-END*/;
@@ -253,7 +291,7 @@
     }
 
     const root = ReactDOM.createRoot(document.getElementById("app"));
-    root.render(<App />);
+    root.render(<ErrorBoundary><App /></ErrorBoundary>);
   </script>
 </body>
 </html>
