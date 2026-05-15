@@ -3,8 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Selva Studio — Casa productora cinematográfica CDMX · Roma Norte</title>
-  <meta name="description" content="Selva Studio es una casa productora con 18 años de trayectoria en la Ciudad de México. Cine para marcas — comerciales, brand films, Content Day, post-producción y digital desde Roma Norte." />
+  <title>Selva Studio, Estudio audiovisual de cine publicitario · CDMX</title>
+  <meta name="description" content="Estudio audiovisual mexicano de cine publicitario. Producción cinematográfica, branded content y Selva Lab, IA aplicada a producción audiovisual. CDMX." />
+  <meta name="keywords" content="estudio audiovisual CDMX, cine publicitario México, productora audiovisual Ciudad de México, branded content, IA producción audiovisual, Selva Lab, B Corp producción" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://selvastudio.mx/" />
 
   <!-- Hreflang -->
   <link rel="alternate" hreflang="es-MX" href="https://selvastudio.mx/" />
@@ -13,33 +16,95 @@
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Selva Studio — Casa productora CDMX" />
-  <meta property="og:description" content="Cine para marcas. Dieciocho años filmando memoria desde Roma Norte." />
+  <meta property="og:site_name" content="Selva Studio" />
+  <meta property="og:title" content="Selva Studio, Estudio audiovisual de cine publicitario · CDMX" />
+  <meta property="og:description" content="Estudio audiovisual mexicano de cine publicitario. Producción cinematográfica, branded content y Selva Lab, IA aplicada a producción audiovisual. CDMX." />
   <meta property="og:locale" content="es_MX" />
   <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:url" content="https://selvastudio.mx/" />
 
-  <!-- JSON-LD Organization + LocalBusiness -->
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Selva Studio, Estudio audiovisual de cine publicitario · CDMX" />
+  <meta name="twitter:description" content="Cine publicitario y branded content desde la Ciudad de México. Selva Lab, IA aplicada a producción audiovisual." />
+
+  <!-- ===========================================================
+       JSON-LD · Schema.org
+       Organization + LocalBusiness (CDMX, no specific street)
+       Person × 3 directors with notable clients
+       =========================================================== -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "name": "Selva Studio",
-    "legalName": "Selva Profunda Studio, SA de CV",
-    "image": "https://selvastudio.mx/og.jpg",
-    "url": "https://selvastudio.mx",
-    "telephone": "+52 55 1959 6185",
-    "email": "axel@selvastudio.mx",
-    "foundingDate": "2007",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Puebla 403",
-      "addressLocality": "Cuauhtémoc",
-      "addressRegion": "CDMX",
-      "postalCode": "06700",
-      "addressCountry": "MX"
-    },
-    "geo": { "@type": "GeoCoordinates", "latitude": 19.4199, "longitude": -99.1599 },
-    "sameAs": ["https://instagram.com/selvastudiomx"]
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://selvastudio.mx/#organization",
+        "name": "Selva Studio",
+        "legalName": "Selva Profunda Studio, SA de CV",
+        "url": "https://selvastudio.mx",
+        "logo": "https://selvastudio.mx/assets/logos/wordmark-nuez.png",
+        "image": "https://selvastudio.mx/og.jpg",
+        "email": "axel@selvastudio.mx",
+        "telephone": "+52 55 1959 6185",
+        "description": "Estudio audiovisual mexicano de cine publicitario. Producción cinematográfica, branded content y Selva Lab, IA aplicada a producción audiovisual.",
+        "areaServed": "MX",
+        "knowsLanguage": ["es", "en"],
+        "sameAs": [
+          "https://instagram.com/selvastudiomx",
+          "https://vimeo.com/selvastudio"
+        ]
+      },
+      {
+        "@type": "LocalBusiness",
+        "@id": "https://selvastudio.mx/#business",
+        "name": "Selva Studio",
+        "image": "https://selvastudio.mx/og.jpg",
+        "url": "https://selvastudio.mx",
+        "telephone": "+52 55 1959 6185",
+        "email": "axel@selvastudio.mx",
+        "priceRange": "$$$",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Ciudad de México",
+          "addressRegion": "CDMX",
+          "addressCountry": "MX"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 19.4326,
+          "longitude": -99.1332
+        },
+        "openingHours": "Mo-Fr 10:00-19:00"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://selvastudio.mx/directores/raga#person",
+        "name": "Raga",
+        "alternateName": "Raga Ibarra",
+        "jobTitle": "Director de cine publicitario",
+        "worksFor": { "@id": "https://selvastudio.mx/#organization" },
+        "knowsAbout": ["Toyota", "Amazon Prime Video", "Apple TV+", "Totalplay", "HBO", "Televisa", "Latin Grammy", "Gaia"]
+      },
+      {
+        "@type": "Person",
+        "@id": "https://selvastudio.mx/directores/brotherhood#person",
+        "name": "Brotherhood",
+        "alternateName": "Erik Limón & Dani Cabrera",
+        "jobTitle": "Dirección publicitaria y contenido digital",
+        "worksFor": { "@id": "https://selvastudio.mx/#organization" },
+        "knowsAbout": ["Sidral Mundet", "Apple TV+", "Totalplay", "Sonríe de Nuevo AC", "Leo Burnett"]
+      },
+      {
+        "@type": "Person",
+        "@id": "https://selvastudio.mx/directores/fer-tovar#person",
+        "name": "Fer Tovar",
+        "jobTitle": "Directora de cine publicitario",
+        "worksFor": { "@id": "https://selvastudio.mx/#organization" },
+        "knowsAbout": ["Corvette", "Amazon México", "Hulu", "Amazon Prime", "Volvo", "Cannes Critics' Week"],
+        "award": "Cannes Critics' Week 2023, Una chica triste"
+      }
+    ]
   }
   </script>
 
@@ -49,9 +114,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="styles/site.css" />
+  <link rel="stylesheet" href="styles/mobile.css" />
 
   <style>
-    /* Design surface — lets layout go edge-to-edge in preview but still breathable on huge monitors */
+    /* Design surface, lets layout go edge-to-edge in preview but still breathable on huge monitors */
     html, body { background: var(--bg); color: var(--fg-1); min-height: 100vh; }
     #app { min-height: 100vh; }
     ::selection { background: var(--accent, var(--rosa)); color: var(--negro); }
@@ -98,9 +164,9 @@
       "accent": "rosa",
       "heroTreatment": "stills",
       "workDensity": "asymmetric",
-      "manifesto": "v1",
+      "manifesto": "v4",
       "hero": "video",
-      "workGrid": "asym"
+      "workGrid": "regular"
     }/*EDITMODE-END*/;
 
     function App() {

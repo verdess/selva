@@ -1,4 +1,4 @@
-// Selva Studio — Work page (full grid with filters + density modes)
+// Selva Studio, Work page (full grid with filters + density modes)
 
 function WorkPage({ lang, openProject, tweaks }) {
   const all = window.SELVA_DATA.projects;
@@ -17,12 +17,12 @@ function WorkPage({ lang, openProject, tweaks }) {
     <div className="page-fade" style={{paddingTop:96}}>
       <section style={wp.head}>
         <div style={wp.headInner}>
-          <div className="eyebrow" style={{opacity:0.6, marginBottom:12}}>Archivo · {all.length} piezas</div>
+          <div className="eyebrow" style={{opacity:0.6, marginBottom:12}}>Archivo</div>
           <h1 style={wp.title}>{lang === "es" ? "Proyectos" : "Work"}</h1>
           <p style={wp.kicker}>
             {lang === "es"
-              ? "Comerciales, brand films, música, documental. Dieciocho años filmando entre Ciudad de México y el mundo."
-              : "Commercials, brand films, music, documentary. Eighteen years filming between Mexico City and the world."}
+              ? "Comerciales, brand films, música, documental. Filmando entre Ciudad de México y el mundo."
+              : "Commercials, brand films, music, documentary. Filming between Mexico City and the world."}
           </p>
         </div>
       </section>
@@ -62,7 +62,7 @@ function FilterPill({ active, onClick, children }) {
   );
 }
 
-// Asymmetric — rows of 3 with first of each rotation larger
+// Asymmetric, rows of 3 with first of each rotation larger
 function AsymGrid({ items, openProject, lang }) {
   // Build rows of varied spans
   const rows = [];
@@ -82,8 +82,8 @@ function AsymGrid({ items, openProject, lang }) {
              style={{...wp.tile, gridColumn: `span ${span}`}}>
             <PosterThumb project={proj} big={span >= 7} />
             <div style={wp.meta}>
-              <div style={wp.metaTop}>{proj.category} · {proj.director} · {proj.year}</div>
-              <div style={wp.metaTitle}>{proj.client} — {proj.title[lang]}</div>
+              <div style={wp.metaTop}>{proj.category} · {proj.year}</div>
+              <div style={wp.metaTitle}>{proj.client} · {proj.title[lang]}</div>
             </div>
           </a>
         ))}
@@ -100,8 +100,8 @@ function RegularGrid({ items, openProject, lang }) {
           <a key={proj.id} href="#" onClick={(e)=>{e.preventDefault(); openProject(proj.id);}} style={wp.tile}>
             <PosterThumb project={proj} />
             <div style={wp.meta}>
-              <div style={wp.metaTop}>{proj.category} · {proj.director} · {proj.year}</div>
-              <div style={wp.metaTitle}>{proj.client} — {proj.title[lang]}</div>
+              <div style={wp.metaTop}>{proj.category} · {proj.year}</div>
+              <div style={wp.metaTitle}>{proj.client} · {proj.title[lang]}</div>
             </div>
           </a>
         ))}
@@ -122,8 +122,8 @@ function CinemaStrip({ items, openProject, lang }) {
                 <PosterThumb project={proj} big />
               </div>
               <div style={wp.meta}>
-                <div style={wp.metaTop}>{proj.category} · {proj.director} · {proj.year}</div>
-                <div style={wp.metaTitle}>{proj.client} — {proj.title[lang]}</div>
+                <div style={wp.metaTop}>{proj.category} · {proj.year}</div>
+                <div style={wp.metaTitle}>{proj.client} · {proj.title[lang]}</div>
               </div>
             </a>
           ))}
@@ -139,7 +139,7 @@ function CinemaStrip({ items, openProject, lang }) {
 const wp = {
   head: { padding:"100px 40px 72px", borderBottom:"1px solid var(--hairline)" },
   headInner: { maxWidth:1440, margin:"0 auto" },
-  title: { fontFamily:"var(--font-display)", fontSize:"clamp(56px, 9vw, 128px)", lineHeight:0.92, letterSpacing:"-0.03em", margin:"0 0 32px", textTransform:"uppercase" },
+  title: { fontFamily:"var(--font-display)", fontSize:"clamp(40px, 5vw, 80px)", lineHeight:0.96, letterSpacing:"-0.025em", margin:"0 0 28px", textTransform:"uppercase" },
   kicker: { fontFamily:"var(--font-serif)", fontSize:"clamp(18px, 1.5vw, 24px)", lineHeight:1.45, color:"var(--fg-2)", maxWidth:640, margin:0, textWrap:"pretty" },
   filters: { padding:"32px 40px", borderBottom:"1px solid var(--hairline)", background:"var(--bg)", position:"sticky", top:0, zIndex:20 },
   filtersInner: { maxWidth:1440, margin:"0 auto", display:"flex", flexDirection:"column", gap:8 },

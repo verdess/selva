@@ -1,4 +1,4 @@
-// Selva — Directors (roster grid), Director detail, and static pages (Studio, ContentDay, Services, Journal, Article, Contact, NotFound)
+// Selva, Directors (roster grid), Director detail, and static pages (Studio, ContentDay, Services, Journal, Article, Contact, NotFound)
 
 /* =========== DIRECTORS ROSTER =========== */
 function DirectorsPage({ lang, openDirector }) {
@@ -7,12 +7,12 @@ function DirectorsPage({ lang, openDirector }) {
     <div className="page-fade" style={{paddingTop:96}}>
       <section style={dp.head}>
         <div style={{maxWidth:1440, margin:"0 auto"}}>
-          <div className="eyebrow" style={{opacity:0.6, marginBottom:12}}>Roster · 4 directores</div>
+          <div className="eyebrow" style={{opacity:0.6, marginBottom:12}}>Roster</div>
           <h1 style={dp.title}>{lang === "es" ? "Directores" : "Directors"}</h1>
           <p style={dp.kicker}>
             {lang === "es"
-              ? "Cuatro voces distintas. Una sola filosofía del cuadro: que el plano sirva a la historia antes que al producto."
-              : "Four distinct voices. One shared philosophy of the frame: the shot serves the story before it serves the product."}
+              ? "Nuestros directores en casa."
+              : "Our directors at home."}
           </p>
         </div>
       </section>
@@ -20,10 +20,10 @@ function DirectorsPage({ lang, openDirector }) {
         {dirs.map((d, i) => (
           <a key={d.id} href="#" onClick={(e)=>{e.preventDefault(); openDirector(d.id);}} style={dp.row}>
             <div style={dp.rowLeft}>
-              <div className="eyebrow" style={{color:"var(--accent)"}}>0{i+1} — {lang === "es" ? "Director" : "Director"}</div>
+              <div className="eyebrow" style={{color:"var(--accent)"}}>0{i+1}, {lang === "es" ? "Director" : "Director"}</div>
               <h2 style={dp.rowName}>{d.name}</h2>
               <div style={dp.rowTag}>{d.tagline[lang]}</div>
-              <div style={dp.rowMeta}>{d.years} · {d.handle}</div>
+              <div style={dp.rowMeta}>{d.handle}</div>
               <div style={dp.rowClients}>
                 {d.clients.join(" · ")}
               </div>
@@ -45,12 +45,12 @@ function DirectorsPage({ lang, openDirector }) {
 }
 const dp = {
   head: { padding:"100px 40px 72px", borderBottom:"1px solid var(--hairline)" },
-  title: { fontFamily:"var(--font-display)", fontSize:"clamp(56px, 9vw, 128px)", lineHeight:0.92, letterSpacing:"-0.03em", margin:"0 0 32px", textTransform:"uppercase" },
-  kicker: { fontFamily:"var(--font-serif)", fontSize:"clamp(18px, 1.5vw, 24px)", lineHeight:1.45, color:"var(--fg-2)", maxWidth:700, margin:0, textWrap:"pretty" },
+  title: { fontFamily:"var(--font-display)", fontSize:"clamp(28px, 4.5vw, 64px)", lineHeight:0.92, letterSpacing:"-0.03em", margin:"0 0 32px", textTransform:"uppercase" },
+  kicker: { fontFamily:"var(--font-serif)", fontSize:"clamp(15px, 1.2vw, 19px)", lineHeight:1.45, color:"var(--fg-2)", maxWidth:600, margin:0, textWrap:"pretty" },
   list: { padding:"40px 40px 120px" },
-  row: { display:"grid", gridTemplateColumns:"1fr 1fr", gap:48, padding:"56px 0", borderTop:"1px solid var(--border)", maxWidth:1440, margin:"0 auto", alignItems:"center", textDecoration:"none", color:"inherit" },
+  row: { display:"grid", gridTemplateColumns:"1fr 1fr", gap:48, padding:"72px 0", borderTop:"1px solid var(--border)", maxWidth:1440, margin:"0 auto", alignItems:"center", textDecoration:"none", color:"inherit" },
   rowLeft: { display:"flex", flexDirection:"column", gap:16 },
-  rowName: { fontFamily:"var(--font-display)", fontSize:"clamp(56px, 8vw, 120px)", lineHeight:0.95, letterSpacing:"-0.02em", margin:"8px 0 0", textTransform:"uppercase" },
+  rowName: { fontFamily:"var(--font-display)", fontSize:"clamp(34px, 4vw, 56px)", lineHeight:0.98, letterSpacing:"-0.015em", margin:"8px 0 0", textTransform:"uppercase" },
   rowTag: { fontFamily:"var(--font-serif)", fontStyle:"italic", fontSize:"clamp(18px, 1.5vw, 22px)", color:"var(--fg-2)", lineHeight:1.4 },
   rowMeta: { fontFamily:"var(--font-sans)", fontSize:11, letterSpacing:"0.2em", textTransform:"uppercase", color:"var(--fg-2)", marginTop:4 },
   rowClients: { fontFamily:"var(--font-sans)", fontSize:13, color:"var(--fg-2)", marginTop:12, letterSpacing:"0.05em" },
@@ -86,9 +86,12 @@ function DirectorPage({ id, lang, openProject, openDirector, go }) {
       <section style={dd.title}>
         <div style={{maxWidth:1440, margin:"0 auto"}}>
           <div className="eyebrow" style={{opacity:0.6, marginBottom:12}}>
-            {d.role[lang]} · {d.years}
+            {d.role[lang]}
           </div>
           <h1 style={dd.name}>{d.name}</h1>
+          <div className="eyebrow" style={{color:"var(--accent)", marginTop:8, marginBottom:14}}>
+            {d.role[lang]}
+          </div>
           <div style={dd.tagline}>{d.tagline[lang]}</div>
         </div>
       </section>
@@ -128,15 +131,6 @@ function DirectorPage({ id, lang, openProject, openDirector, go }) {
               </a>
             ))}
           </div>
-        </div>
-      </section>
-
-      <section style={dd.cta}>
-        <div style={{maxWidth:1100, margin:"0 auto", textAlign:"center"}}>
-          <div className="eyebrow" style={{opacity:0.6, marginBottom:20}}>Contratación directa</div>
-          <a href={`mailto:axel@selvastudio.mx?subject=${encodeURIComponent("Proyecto con " + d.name)}`} style={dd.ctaLink}>
-            {lang==="es" ? `Contratar a ${d.name}` : `Book ${d.name}`} <span style={{color:"var(--accent)"}}>→</span>
-          </a>
         </div>
       </section>
 
@@ -183,20 +177,24 @@ function StudioPage({ lang }) {
       <section style={sp.hero}>
         <div style={{maxWidth:1440, margin:"0 auto", display:"grid", gridTemplateColumns:"1fr 1fr", gap:64, alignItems:"center"}}>
           <div>
-            <div className="eyebrow" style={{opacity:0.6, marginBottom:20}}>Puebla 403 · Roma Norte · CDMX</div>
-            <h1 style={sp.hd}>{isES ? "Una casa productora que piensa como cineasta." : "A production house that thinks like a filmmaker."}</h1>
+            <div className="eyebrow" style={{opacity:0.6, marginBottom:20}}>Estudio audiovisual · CDMX</div>
+            <h1 style={sp.hd}>
+              {isES
+                ? <>Estudio audiovisual mexicano.<br/>Cine publicitario, ficción,<br/>laboratorio de tecnología y <em style={{fontFamily:"var(--font-serif)", fontStyle:"italic", color:"var(--rosa)"}}>sustentabilidad</em>.</>
+                : <>Mexican audiovisual studio.<br/>Commercial cinema, fiction,<br/>technology and <em style={{fontFamily:"var(--font-serif)", fontStyle:"italic", color:"var(--rosa)"}}>sustainability</em> lab.</>}
+            </h1>
             <p style={sp.kicker}>
               {isES
-                ? "Dieciocho años. Cientos de comerciales. Tres largos. Una filosofía invariable: que cada pieza sea la pieza que nos gustaría haber visto en un festival."
-                : "Eighteen years. Hundreds of commercials. Three features. One constant: every piece should be the piece we'd want to have watched at a festival."}
+                ? "Cine para marcas."
+                : "Cinema for brands."}
             </p>
           </div>
           <div style={sp.heroRight} className="grain">
-            <div style={{fontFamily:"var(--font-display)", fontSize:"clamp(52px, 7.5vw, 116px)", lineHeight:0.88, letterSpacing:"-0.03em", color:"var(--nuez)", textTransform:"uppercase"}}>
-              DESDE<br/>2007
+            <div style={{fontFamily:"var(--font-display)", fontSize:"clamp(40px, 5.5vw, 88px)", lineHeight:0.92, letterSpacing:"-0.025em", color:"var(--nuez)", textTransform:"uppercase"}}>
+              Selva<br/><em style={{fontFamily:"var(--font-serif)", fontStyle:"italic", color:"var(--rosa)", fontSize:"0.85em"}}>Studio</em>
             </div>
-            <div style={{marginTop:28, fontFamily:"var(--font-serif)", fontStyle:"italic", fontSize:20, color:"var(--rosa)"}}>
-              Casa productora · CDMX
+            <div style={{marginTop:24, fontFamily:"var(--font-sans)", fontSize:11, letterSpacing:"0.24em", textTransform:"uppercase", color:"var(--rosa)"}}>
+              México 2026 ✦ CDMX
             </div>
           </div>
         </div>
@@ -205,37 +203,40 @@ function StudioPage({ lang }) {
       <section style={sp.body}>
         <div style={sp.bodyInner}>
           <div>
-            <div className="eyebrow" style={{opacity:0.55, marginBottom:16}}>01 — {isES?"Origen":"Origin"}</div>
             <p style={sp.p}>
+              <span style={sp.dropCap}>{isES ? "S" : "S"}</span>
               {isES
-                ? "Selva empezó en un departamento de Álvaro Obregón en 2007. Éramos tres personas y una idea: que se podía hacer comerciales sin renunciar al oficio del cine. Dieciocho años después la oficina se mudó a Puebla 403, el equipo creció a treinta y dos personas, pero la idea sigue siendo la misma."
-                : "Selva started in an Álvaro Obregón apartment in 2007. Three people, one idea: you could make commercials without giving up the craft of film. Eighteen years later, the office moved to Puebla 403, the team grew to thirty-two — but the idea is the same."}
+                ? "elva es un estudio audiovisual mexicano con base en CDMX. Hacemos cine publicitario, ficción y proyectos originales para streaming. La tecnología forma parte del proceso: previsualización con herramientas de IA, producción virtual cuando la locación cuesta más que la idea, integración de Runway, Midjourney y Sora en pre-producción. La usamos cuando suma al plano, y volvemos a cámara cuando no. Tecnología como método, no como producto."
+                : "elva is a Mexican audiovisual studio based in CDMX. We make commercial cinema, fiction and streaming originals. Technology is part of the process: previsualization with AI tools, virtual production when the location costs more than the idea, integration of Runway, Midjourney and Sora in pre-production. We use it when it adds to the frame, and we return to the camera when it doesn't. Technology as method, not as product."}
             </p>
           </div>
-          <div>
-            <div className="eyebrow" style={{opacity:0.55, marginBottom:16}}>02 — {isES?"Filosofía":"Philosophy"}</div>
-            <p style={sp.p}>
-              {isES
-                ? "Pensamos como cineastas. Ejecutamos como empresa. Nos comunicamos como marca. Las tres cosas a la vez — no una encima de otra."
-                : "We think like filmmakers. We execute like a company. We communicate like a brand. All three at once — not one on top of the other."}
-            </p>
+        </div>
+
+        {/* Sustainability anchor block */}
+        <div style={sp.shortBlock}>
+          <div className="eyebrow" style={{color:"var(--rosa)", marginBottom:18}}>
+            <span className="hairline" style={{marginRight:10, background:"var(--rosa)"}} />{isES?"Sustentabilidad":"Sustainability"}
           </div>
-          <div>
-            <div className="eyebrow" style={{opacity:0.55, marginBottom:16}}>03 — {isES?"Equipo":"Team"}</div>
-            <p style={sp.p}>
-              {isES
-                ? "Dos socios fundadores, cuatro directores de casa, un equipo de producción de doce personas, colaboraciones recurrentes con DOPs, editores, coloristas y sound designers en México, Colombia y Argentina. Puerta abierta con agencias y brand managers directos."
-                : "Two founding partners, four in-house directors, a twelve-person production team, recurring collaborations with DOPs, editors, colorists, and sound designers across Mexico, Colombia, and Argentina. Open door with agencies and direct brand managers."}
-            </p>
-          </div>
-          <div>
-            <div className="eyebrow" style={{opacity:0.55, marginBottom:16}}>04 — {isES?"Hoy":"Today"}</div>
-            <p style={sp.p}>
-              {isES
-                ? "Rodamos cuarenta jornadas al año. Firmamos proyectos con Toyota, Apple TV+, Amazon, Mercado Pago, Aeroméxico, Corvette, Hulu. Y un corto por año que nos recuerda por qué empezamos."
-                : "We shoot forty days a year. We sign projects with Toyota, Apple TV+, Amazon, Mercado Pago, Aeroméxico, Corvette, Hulu. And one short film a year to remember why we started."}
-            </p>
-          </div>
+          <h3 style={sp.shortTitle}>
+            {isES
+              ? <>Producir <em style={{fontStyle:"italic", fontFamily:"var(--font-serif)", color:"var(--rosa)"}}>sin dejar huella</em>.</>
+              : <>Producing <em style={{fontStyle:"italic", fontFamily:"var(--font-serif)", color:"var(--rosa)"}}>without a trace</em>.</>}
+          </h3>
+          <p style={sp.shortDesc}>
+            {isES
+              ? "98% de materiales reciclados en set, 80% de proveedores locales, certificación B Corp en proceso. La sostenibilidad no es declaración, es método y datos."
+              : "98% recycled set materials, 80% local suppliers, B Corp certification in process. Sustainability isn't a statement, it's method and data."}
+          </p>
+        </div>
+
+        {/* 05, Mañana */}
+        <div style={sp.future}>
+          <div className="eyebrow" style={{opacity:0.55, marginBottom:16}}>05, {isES?"Hacia adelante":"What comes next"}</div>
+          <p style={sp.futureP}>
+            {isES
+              ? "Estamos en desarrollo de tres películas. Los nombres todavía no podemos revelarlos."
+              : "We're in development on three feature films. The titles can't be shared yet."}
+          </p>
         </div>
       </section>
 
@@ -252,8 +253,8 @@ function StudioPage({ lang }) {
             </div>
             <h2 style={sp.valuesTitle}>
               {isES
-                ? <>Cine, innovación,<br/>presencia, <em style={{fontStyle:"italic", fontFamily:"var(--font-serif)", color:"var(--rosa)"}}>conciencia</em>.</>
-                : <>Cinema, innovation,<br/>presence, <em style={{fontStyle:"italic", fontFamily:"var(--font-serif)", color:"var(--rosa)"}}>conscience</em>.</>}
+                ? <>Cine, laboratorio,<br/>organismo, <em style={{fontStyle:"italic", fontFamily:"var(--font-serif)", color:"var(--rosa)"}}>conciencia</em>.</>
+                : <>Cinema, laboratory,<br/>organism, <em style={{fontStyle:"italic", fontFamily:"var(--font-serif)", color:"var(--rosa)"}}>conscience</em>.</>}
             </h2>
           </div>
 
@@ -263,29 +264,29 @@ function StudioPage({ lang }) {
                 n:"01",
                 t: isES?"Calidad cinematográfica":"Cinematic quality",
                 d: isES
-                  ? "Producción con estándares de cine, porque la calidad no es opcional. Cada pieza — comercial, vertical, digital — se rueda, ilumina y edita como si fuera a un festival."
-                  : "Cinema-grade production, because quality is not optional. Every piece — commercial, vertical, digital — is shot, lit and cut as if it were headed to a festival.",
+                  ? "Producción con estándares de cine. Cada pieza, comercial, vertical, digital, se rueda, ilumina y edita como si fuera a un festival. La calidad no es opcional, es método."
+                  : "Cinema-grade production. Every piece, commercial, vertical, digital, is shot, lit and cut as if it were headed to a festival. Quality isn't optional, it's method.",
               },
               {
                 n:"02",
-                t: isES?"Innovación":"Innovation",
+                t: isES?"Laboratorio":"Laboratory",
                 d: isES
-                  ? "Equipo de última generación, IA generativa, machine learning y producción virtual en el proceso creativo — para mejorar tiempos, reducir costos, optimizar procesos y romper los límites creativos."
-                  : "Latest-generation gear, generative AI, machine learning and virtual production inside the creative process — to improve timing, reduce cost, optimize flows and break creative limits.",
+                  ? "Probamos. Comparamos. Documentamos lo que falla. Usamos Runway, Midjourney, Sora cuando suman al plano, y volvemos a cámara cuando no. La tecnología es método, no producto."
+                  : "We test. We compare. We document what fails. We use Runway, Midjourney, Sora when they add to the frame, and we return to the camera when they don't. Technology is method, not product.",
               },
               {
                 n:"03",
-                t: isES?"Adaptabilidad":"Adaptability",
+                t: isES?"Organismo creativo":"Living organism",
                 d: isES
-                  ? "Nos comportamos como un organismo vivo, adaptándonos a cada proyecto. Nos convertimos en una extensión creativa del cliente: alineados a sus objetivos, fieles a su esencia, ajustándonos a distintos presupuestos sin sacrificar calidad."
-                  : "We behave like a living organism, adapting to every project. We become a creative extension of the client — aligned with their goals, faithful to their essence, flexing across budgets without sacrificing quality.",
+                  ? "Nos comportamos como un organismo vivo, adaptándonos a cada proyecto. Una extensión creativa del cliente, alineados a sus objetivos, fieles a su esencia, ajustándonos a distintos presupuestos sin sacrificar calidad."
+                  : "We behave like a living organism, adapting to every project. A creative extension of the client, aligned with their goals, faithful to their essence, flexing across budgets without sacrificing quality.",
               },
               {
                 n:"04",
-                t: isES?"Sustentabilidad":"Sustainability",
+                t: isES?"Conciencia":"Conscience",
                 d: isES
-                  ? "Entendemos a la perfección los requerimientos de las marcas modernas y sus audiencias. Alineamos cada producción a estándares de sustentabilidad y responsabilidad social — 98% de materiales reciclados en set, 80% de proveedores locales."
-                  : "We deeply understand the requirements of modern brands and their audiences. We align every production to sustainability and social-responsibility standards — 98% recycled set materials, 80% local suppliers.",
+                  ? "En camino a certificación B Corp en 2026. Hoy: 98% de materiales reciclados en set, 80% de proveedores locales. Lo que falta: transporte. La sostenibilidad no es declaración, es método y datos."
+                  : "On the path to B Corp certification in 2026. Today: 98% recycled set materials, 80% local suppliers. What's still pending: transport. Sustainability isn't a statement, it's method and data.",
               },
             ].map((v, i) => (
               <div key={v.n} style={sp.valueCard}>
@@ -313,23 +314,24 @@ function StudioPage({ lang }) {
           <h3 style={sp.teamHd}>{isES ? "Las personas que firman cada pieza." : "The people who sign every piece."}</h3>
           <div style={sp.teamGrid}>
             {[
-              ["Axel Torres", isES ? "Director de Producción" : "Head of Production"],
-              ["Raga", isES ? "Socio fundador / Dirección" : "Founding partner / Director"],
-              ["Mariana Solís", isES ? "Productor Ejecutivo Senior" : "Senior Executive Producer"],
-              ["Pamela Rojas", isES ? "Jefa de Producción" : "Production Manager"],
-              ["Regina Cheang", isES ? "Dirección de Arte" : "Art Direction"],
-              ["Vicente Nava", isES ? "Post-producción" : "Post-production"],
-              ["Sebastián Díaz", isES ? "Edición" : "Editor"],
-              ["Diana Morales", isES ? "Cuentas / Brand" : "Accounts / Brand"],
-            ].map(([n, r]) => (
+              ["Axel Torres",         isES ? "Dirección de Producción" : "Head of Production",     isES ? "Ha producido en México, España, Brasil y LATAM. Punto de contacto para clientes y agencias." : "Has produced in Mexico, Spain, Brazil and LATAM. Single point of contact for clients and agencies."],
+              ["Raga",                isES ? "Dirección" : "Director",                              isES ? "Dos décadas dirigiendo comerciales. Travellings elegantes, comedia con timing perfecto." : "Two decades directing commercials. Elegant travelling shots, perfect comedic timing."],
+              ["Manuel Verde",        isES ? "Productor Ejecutivo · Dirección de Estrategia" : "Executive Producer · Strategy Director",         isES ? "Estrategia creativa y de marca. Traduce briefs en arquitectura de proyecto." : "Creative and brand strategy. Translates briefs into project architecture."],
+              ["Itzel Miranda",       isES ? "Producción Ejecutiva" : "Executive Production",        isES ? "Coordinación de rodajes, presupuestos y agenda con clientes y agencias." : "Shoot coordination, budgets and client/agency scheduling."],
+              ["Laura Carbajal",      isES ? "Gerente Administrativa" : "Administrative Manager",     isES ? "Finanzas, operación y contabilidad del estudio." : "Finance, operations and studio accounting."],
+              ["Moisés de la Cruz",   isES ? "Productor Creativo" : "Creative Producer",             isES ? "Concepto, narrativa y desarrollo creativo de cada proyecto." : "Concept, narrative and creative development for every project."],
+              ["Ricardo Centeno",     isES ? "Director de Postproducción" : "Post-production Director", isES ? "Edición, color, sonido. Coordinación con New Art, Company 3 y Mute." : "Editing, color, sound. Coordination with New Art, Company 3 and Mute."],
+              ["Charly, Cuco y Jack", isES ? "Seguridad" : "Security",                              isES ? "Vigilancia del estudio, recibimiento del equipo, presencia constante." : "Studio watch, crew welcome, constant presence."],
+            ].map(([n, r, d]) => (
               <div key={n} style={sp.teamCard}>
                 <div style={sp.teamAvatar} className="grain">
-                  <span style={{fontFamily:"var(--font-display)", fontSize:48, color:"var(--nuez)"}}>
+                  <span style={{fontFamily:"var(--font-display)", fontSize:48, color:"var(--nuez)", opacity:0.55}}>
                     {n.split(" ").map(w=>w[0]).slice(0,2).join("")}
                   </span>
                 </div>
                 <div style={sp.teamName}>{n}</div>
                 <div style={sp.teamRole}>{r}</div>
+                <div style={sp.teamCraft}>{d}</div>
               </div>
             ))}
           </div>
@@ -340,12 +342,71 @@ function StudioPage({ lang }) {
 }
 const sp = {
   hero: { padding:"80px 40px", borderBottom:"1px solid var(--hairline)" },
-  hd: { fontFamily:"var(--font-display)", fontSize:"clamp(48px, 6.5vw, 88px)", lineHeight:0.95, letterSpacing:"-0.02em", margin:"0 0 28px", textTransform:"uppercase" },
+  hd: { fontFamily:"var(--font-display)", fontSize:"clamp(16px, 2.1vw, 30px)", lineHeight:1.02, letterSpacing:"-0.02em", margin:"0 0 24px", textTransform:"uppercase", textWrap:"balance" },
   kicker: { fontFamily:"var(--font-serif)", fontSize:"clamp(18px, 1.5vw, 22px)", lineHeight:1.5, color:"var(--fg-2)", maxWidth:560, textWrap:"pretty" },
   heroRight: { position:"relative", aspectRatio:"4/3", background:"var(--vino)", padding:48, display:"flex", flexDirection:"column", justifyContent:"center", overflow:"hidden" },
   body: { padding:"100px 40px", borderTop:"1px solid var(--hairline)" },
-  bodyInner: { maxWidth:1100, margin:"0 auto", display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:"72px 64px" },
+  bodyInner: { maxWidth:1100, margin:"0 auto" },
   p: { fontFamily:"var(--font-serif)", fontSize:"clamp(16px, 1.15vw, 19px)", lineHeight:1.65, color:"var(--fg-1)", margin:0, textWrap:"pretty" },
+  dropCap: {
+    fontFamily:"var(--font-display)",
+    fontSize:"clamp(64px, 7vw, 96px)",
+    lineHeight:0.85,
+    float:"left",
+    marginRight:14,
+    marginTop:6,
+    color:"var(--rosa)",
+  },
+  shortBlock: {
+    maxWidth:1100, margin:"96px auto 0",
+    padding:"56px 40px",
+    background:"var(--negro-500)",
+    color:"var(--nuez)",
+    border:"1px solid rgba(244,240,230,0.12)",
+  },
+  shortTitle: {
+    fontFamily:"var(--font-display)",
+    fontSize:"clamp(28px, 3.4vw, 52px)",
+    lineHeight:0.98,
+    letterSpacing:"-0.02em",
+    margin:"0 0 20px",
+    textTransform:"uppercase",
+    color:"var(--nuez)",
+    textWrap:"balance",
+  },
+  shortDesc: {
+    fontFamily:"var(--font-serif)",
+    fontStyle:"italic",
+    fontSize:"clamp(16px, 1.25vw, 19px)",
+    lineHeight:1.55,
+    color:"var(--nuez)",
+    opacity:0.78,
+    margin:0,
+    maxWidth:680,
+    textWrap:"pretty",
+  },
+  future: {
+    maxWidth:1100, margin:"72px auto 0",
+  },
+  futureP: {
+    fontFamily:"var(--font-serif)",
+    fontStyle:"italic",
+    fontSize:"clamp(18px, 1.5vw, 24px)",
+    lineHeight:1.5,
+    color:"var(--fg-2)",
+    margin:0,
+    maxWidth:760,
+    textWrap:"pretty",
+  },
+  teamCraft: {
+    fontFamily:"var(--font-serif)",
+    fontStyle:"italic",
+    fontSize:13,
+    lineHeight:1.5,
+    color:"var(--fg-2)",
+    marginTop:8,
+    textWrap:"pretty",
+  },
   team: { padding:"100px 40px 160px", borderTop:"1px solid var(--hairline)" },
   teamHd: { fontFamily:"var(--font-display)", fontSize:"clamp(40px, 5vw, 72px)", lineHeight:0.98, letterSpacing:"-0.02em", margin:"8px 0 56px", textTransform:"uppercase" },
   teamGrid: { display:"grid", gridTemplateColumns:"repeat(4, 1fr)", gap:32 },
@@ -489,7 +550,7 @@ function ContentDayPage({ lang, go, openProject }) {
           <div className="eyebrow" style={{color:"var(--nuez)", opacity:0.7, marginBottom:40}}>Cómo funciona</div>
           <div style={cdp.steps}>
             {[
-              { n:"01", t: isES?"Briefing estratégico":"Strategic briefing", d: isES?"Seis semanas antes. No escribimos un guión — diseñamos un sistema. Qué plano sirve a qué formato, qué escena se vuelve vertical.":"Six weeks out. We don't write a script — we design a system. Which shot serves which format, which scene becomes vertical."},
+              { n:"01", t: isES?"Briefing estratégico":"Strategic briefing", d: isES?"Seis semanas antes. No escribimos un guión, diseñamos un sistema. Qué plano sirve a qué formato, qué escena se vuelve vertical.":"Six weeks out. We don't write a script, we design a system. Which shot serves which format, which scene becomes vertical."},
               { n:"02", t: isES?"Pre-producción paralela":"Parallel pre-production", d: isES?"Arte, talent, vestuario y post trabajando con el mismo mapa. La locación se diseña para servir a las seis piezas a la vez.":"Art, talent, wardrobe and post all working off the same map. Location designed to serve six pieces at once."},
               { n:"03", t: isES?"Rodaje · 1 día":"Shoot · 1 day", d: isES?"Unidad principal + segunda cámara + foto fija. Coreografiado, no apurado. Nadie repite setup. Nadie espera.":"Main unit + second camera + stills. Choreographed, not rushed. Nobody resets. Nobody waits."},
               { n:"04", t: isES?"Post simultánea":"Parallel post", d: isES?"Seis pistas de edición corriendo en paralelo. Un mismo grade. Sonido unificado. Entrega en dos semanas.":"Six editing tracks running in parallel. One grade. Unified sound. Delivery in two weeks."},
@@ -507,8 +568,8 @@ function ContentDayPage({ lang, go, openProject }) {
       <section style={cdp.numbers}>
         <div style={{maxWidth:1440, margin:"0 auto", display:"grid", gridTemplateColumns:"repeat(4, 1fr)", gap:0, borderTop:"1px solid rgba(244,240,230,0.2)"}}>
           {[
-            ["4—6", isES?"Piezas por jornada":"Pieces per day"],
-            ["35—50%", isES?"Ahorro en costo":"Cost savings"],
+            ["4-6", isES?"Piezas por jornada":"Pieces per day"],
+            ["35-50%", isES?"Ahorro en costo":"Cost savings"],
             ["2 sem.", isES?"Entrega post":"Post delivery"],
             ["1 día", isES?"En set":"On set"],
           ].map(([n, l]) => (
@@ -575,12 +636,6 @@ const cdp = {
 /* =========== SERVICES =========== */
 function ServicesPage({ lang, go, openProject }) {
   const isES = lang === "es";
-  const services = [
-    { id:"publicidad", t: isES?"Publicidad":"Advertising", d: isES?"Comerciales, brand films, documentales de marca, cortometrajes publicitarios.":"Commercials, brand films, branded documentary, short-form advertising.", frame:{bg:"var(--vino)", word:"AD"}},
-    { id:"post", t: isES?"Post-producción":"Post-production", d: isES?"Edición, color, VFX, sound design. Con talento in-house y los mejores estudios de la región.":"Editing, color, VFX, sound design. In-house talent plus the region's top studios.", frame:{bg:"var(--olivo)", word:"PO"}},
-    { id:"digital", t: "Digital", d: isES?"Piezas nativas para redes, formatos verticales, shorts, video social.":"Native social pieces, vertical formats, shorts, social video.", frame:{bg:"var(--gris)", word:"DG"}},
-    { id:"foto", t: isES?"Foto fija":"Stills", d: isES?"Fotografía publicitaria editorial, key visuals, retrato de talento.":"Editorial advertising stills, key visuals, talent portraiture.", frame:{bg:"var(--negro-500)", word:"FT"}},
-  ];
   const cdProjects = window.SELVA_DATA.projects.filter(p => ["mercadopago-aqui","aeromexico-ruta","amazon-casa"].includes(p.id));
   return (
     <div className="page-fade" style={{paddingTop:96}}>
@@ -590,58 +645,115 @@ function ServicesPage({ lang, go, openProject }) {
           <h1 style={sv.title}>{isES ? "Servicios" : "Services"}</h1>
           <p style={sv.kicker}>
             {isES
-              ? "Dos formatos propietarios. Cuatro pilares de producción. Una sola casa — no subcontratado, no outsourced."
-              : "Two proprietary formats. Four production pillars. One house — not subcontracted, not outsourced."}
+              ? "Producción audiovisual para publicidad y música, documental y ficción."
+              : "Audiovisual production for advertising and music, documentary and fiction."}
           </p>
         </div>
       </section>
 
-      {/* ========= SIGNATURE: CONTENT DAY ========= */}
-      <section style={sv.signatureCD}>
-        <div style={sv.signInner}>
-          <div style={sv.signLeft}>
-            <div className="eyebrow" style={{color:"var(--rosa)", marginBottom:24}}>
-              <span className="hairline" style={{marginRight:10, background:"var(--rosa)"}} />
-              {isES?"Formato propietario Selva · Desde 2022":"Selva proprietary format · Since 2022"}
-            </div>
-            <h2 style={sv.signTitle}>Content<br/>Day<span style={{color:"var(--rosa)"}}>.</span></h2>
-            <p style={sv.signKicker}>
-              {isES
-                ? <><strong style={{color:"var(--nuez)", fontFamily:"var(--font-serif)", fontStyle:"italic"}}>Una idea. Todo el año de una marca.</strong> No es un rodaje eficiente — es una arquitectura editorial: un concepto rector que, diseñado desde producción, se vuelve hero film, campaña, social, digital, entrevistas y BTS. Todo con el mismo lenguaje cinematográfico, todo rodado en un solo día.</>
-                : <><strong style={{color:"var(--nuez)", fontFamily:"var(--font-serif)", fontStyle:"italic"}}>One idea. A brand's entire year.</strong> It's not an efficient shoot — it's an editorial architecture: one governing concept that, designed from production, becomes hero film, campaign, social, digital, interviews and BTS. All in one cinematic language, all shot in a single day.</>}
-            </p>
-            <div style={sv.signSteps}>
-              {[
-                { n:"01", t: isES?"Capa creativa":"Creative layer", d: isES?"Concepto rector, narrativa modular, estilo visual. Una big idea que da jerarquía a cada pieza — hero, campaña, digital, social, always on.":"Governing concept, modular narrative, visual style. A big idea that gives hierarchy to every piece — hero, campaign, digital, social, always on."},
-                { n:"02", t: isES?"Sets modulares":"Modular sets", d: isES?"Un mismo foro se convierte en set principal, editorial, digital, entrevistas y BTS. Diseñado desde arte y luz como campaña, no como contenido rápido.":"A single stage becomes main set, editorial, digital, interviews and BTS. Designed from art and light as a campaign, not as quick content."},
-                { n:"03", t: isES?"Unidades simultáneas":"Parallel units", d: isES?"Unidad A rueda hero / TVC con lenguaje de cine. Unidad B captura foto fija de campaña. Unidad C produce social mobile-first. Unidad D documenta BTS.":"Unit A shoots hero / TVC in cinema language. Unit B captures campaign stills. Unit C produces mobile-first social. Unit D documents BTS."},
-                { n:"04", t: isES?"Post por plataforma":"Platform-native post", d: isES?"Edición, versionado masivo y adaptaciones por formato. Un mismo grade y sonido unifican todo — consistencia de hero a social.":"Editing, mass versioning and format-native adaptations. One grade and sound unify everything — consistency from hero to social."},
-              ].map(s => (
-                <div key={s.n} style={sv.stepCard}>
-                  <div style={sv.stepN}>{s.n}</div>
-                  <div style={sv.stepT}>{s.t}</div>
-                  <div style={sv.stepD}>{s.d}</div>
-                </div>
-              ))}
-            </div>
+      {/* ========= 01 · DIGITAL ========= */}
+      <section style={sv.pillarRoot} data-bg="negro">
+        <div style={sv.pillarHead}>
+          <div className="eyebrow" style={{color:"var(--rosa)", marginBottom:20}}>
+            <span className="hairline" style={{marginRight:10, background:"var(--rosa)"}} />
+            01, {isES?"Pilar":"Pillar"}
           </div>
-          <div style={sv.signNumbers}>
+          <h2 style={sv.pillarTitle}>Digital<span style={{color:"var(--rosa)"}}>.</span></h2>
+          <p style={sv.pillarLede}>
+            {isES
+              ? "Producción digital con estándar cinematográfico. Verticales, shorts, Content Day y Always On."
+              : "Digital production with cinematic standard. Verticals, shorts, Content Day and Always On."}
+          </p>
+        </div>
+
+        {/* ALWAYS ON · sub-format inside Digital */}
+        <div style={sv.subFormatAO}>
+          <div style={sv.subFormatHead}>
+            <h3 style={{...sv.subFormatTitle, color:"var(--vino)"}}>Always On<span style={{color:"var(--vino)"}}>.</span></h3>
+            <p style={{...sv.subFormatBody, color:"var(--vino)", opacity:1}}>
+              {isES
+                ? "Producción continua con tu marca todo el año."
+                : "Continuous production with your brand year-round."}
+            </p>
+            <p style={{...sv.subFormatBody2, color:"var(--vino)", opacity:0.85}}>
+              {isES
+                ? "Marcas Always-On crecen 3.5x más rápido y reducen hasta 60% el costo por pieza."
+                : "Always-On brands grow 3.5x faster and cut per-piece cost by up to 60%."}
+            </p>
+          </div>
+          <div style={sv.aoCols}>
             {[
-              ["1", isES?"Idea rectora":"Governing idea"],
-              ["100+", isES?"Outputs posibles":"Possible outputs"],
-              ["4", isES?"Unidades en paralelo":"Parallel units"],
-              ["1", isES?"Lenguaje cinematográfico":"Cinematic language"],
+              {
+                k: isES?"Qué incluye":"What's included",
+                items: isES
+                  ? ["Dirección creativa mensual","Producción de 8–12 piezas / mes","Unidad ligera residente","Edición y corrección de color integradas","Reporte de performance"]
+                  : ["Monthly creative direction","8–12 pieces / month in production","Resident light unit","Integrated editing and color correction","Performance reporting"]
+              },
+              {
+                k: isES?"Cómo funciona":"How it works",
+                items: isES
+                  ? ["Iguala trimestral o anual","Planeación editorial 90 días","Turnaround: 5 días por pieza","Dashboard de tracking","Un solo punto de contacto"]
+                  : ["Quarterly or annual partnership","90-day editorial planning","Turnaround: 5 days per piece","Tracking dashboard","Single point of contact"]
+              },
+            ].map((col, i) => (
+              <div key={i} style={sv.aoCol}>
+                <div style={sv.aoColTitle}>{col.k}</div>
+                <ul style={sv.aoList}>
+                  {col.items.map((it, j) => (
+                    <li key={j} style={sv.aoItem}><span style={sv.aoBullet}>·</span>{it}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+          <div style={sv.aoStatsRow}>
+            {[
+              ["3.5x", isES?"Crecimiento":"Growth"],
+              ["−60%", isES?"Costo por pieza":"Cost per piece"],
+              ["90 d.", isES?"Plan editorial":"Editorial plan"],
             ].map(([n, l]) => (
-              <div key={l} style={sv.numCell}>
-                <div style={sv.numN}>{n}</div>
-                <div style={sv.numL}>{l}</div>
+              <div key={l} style={sv.aoNumCell}>
+                <div style={sv.aoNumN}>{n}</div>
+                <div style={sv.aoNumL}>{l}</div>
               </div>
             ))}
           </div>
         </div>
 
-        <div style={{padding:"0 40px 120px", background:"var(--negro)"}}>
-          <div style={{maxWidth:1440, margin:"0 auto"}}>
+        {/* CONTENT DAY · sub-format inside Digital */}
+        <div style={sv.subFormat}>
+          <div style={sv.subFormatHead}>
+            <h3 style={sv.subFormatTitle}>Content Day<span style={{color:"var(--rosa)"}}>.</span></h3>
+            <p style={sv.subFormatBody}>
+              {isES
+                ? "Una arquitectura editorial: un concepto rector se vuelve hero film, campaña, social y BTS, todo en un solo día."
+                : "An editorial architecture: a governing concept becomes hero film, campaign, social and BTS, all in a single day."}
+            </p>
+          </div>
+          <div style={sv.signSteps}>
+            {[
+              { n:"01", t: isES?"Unidades simultáneas":"Parallel units", d: isES?"Unidad A: hero / TVC. B: foto fija de campaña. C: social. D: BTS.":"Unit A: hero / TVC. B: campaign stills. C: social. D: BTS."},
+              { n:"02", t: isES?"Post por plataforma":"Platform-native post", d: isES?"Versionado masivo y adaptaciones por formato. Un mismo grade y sonido.":"Mass versioning and format-native adaptations. One grade, one sound."},
+            ].map(s => (
+              <div key={s.n} style={sv.stepCard}>
+                <div style={sv.stepN}>{s.n}</div>
+                <div style={sv.stepT}>{s.t}</div>
+                <div style={sv.stepD}>{s.d}</div>
+              </div>
+            ))}
+          </div>
+          <div style={sv.cdNumbers}>
+            {[
+              ["Hasta 70", isES?"Piezas por rodaje":"Pieces per shoot"],
+              ["2-5", isES?"Unidades en paralelo":"Parallel units"],
+            ].map(([n, l]) => (
+              <div key={l} style={sv.cdNumCell}>
+                <div style={sv.numN}>{n}</div>
+                <div style={sv.numL}>{l}</div>
+              </div>
+            ))}
+          </div>
+          <div style={sv.cdCases}>
             <div className="eyebrow" style={{color:"var(--nuez)", opacity:0.7, marginBottom:28}}>{isES?"Content Days entregados":"Content Days delivered"}</div>
             <div style={sv.caseGrid}>
               {cdProjects.map(p => (
@@ -658,94 +770,145 @@ function ServicesPage({ lang, go, openProject }) {
             </div>
           </div>
         </div>
-      </section>
 
-      {/* ========= SIGNATURE: ALWAYS ON ========= */}
-      <section style={sv.signatureAO}>
-        <div style={sv.aoInner}>
-          <div style={sv.aoLeft}>
-            <div className="eyebrow" style={{color:"var(--vino)", marginBottom:24}}>
-              <span className="hairline" style={{marginRight:10, background:"var(--vino)"}} />
-              {isES?"Formato propietario · 02":"Proprietary format · 02"}
-            </div>
-            <h2 style={sv.aoTitle}>Always<br/>On<span style={{color:"var(--vino)"}}>.</span></h2>
-            <p style={sv.aoKicker}>
-              {isES
-                ? "Un equipo de Selva embebido con tu marca todo el año. Producción continua — no por campaña, por calendario. De un rodaje, más de cien entregables. Piezas listas para siempre que el algoritmo las pida."
-                : "A Selva team embedded with your brand year-round. Continuous production — not by campaign, by calendar. From one shoot, over a hundred deliverables. Pieces ready whenever the algorithm asks."}
-            </p>
-            <p style={sv.aoKicker2}>
-              {isES
-                ? "Un sistema vivo: contenido que evoluciona mes a mes. Planificación, filmación, post y distribución como flujo continuo. Las marcas Always-On crecen 3.5x más rápido y reducen hasta 60% el costo por pieza."
-                : "A living system: content that evolves month by month. Planning, shooting, post and distribution as a continuous flow. Always-On brands grow 3.5x faster and cut per-piece cost by up to 60%."}
-            </p>
+        {/* Otros formatos digitales */}
+        <div style={sv.subFormatPlain}>
+          <div className="eyebrow" style={{color:"var(--rosa)", marginBottom:18, opacity:0.85}}>
+            <span className="hairline" style={{marginRight:10, background:"var(--rosa)"}} />
+            {isES?"Y también":"And also"}
           </div>
-
-          <div style={sv.aoCols}>
-            {[
-              {
-                k: isES?"Qué incluye":"What's included",
-                items: isES
-                  ? ["Dirección creativa mensual","Producción de 8–12 piezas / mes","Unidad ligera residente","Edición y grade integrados","Reporte de performance"]
-                  : ["Monthly creative direction","8–12 pieces / month in production","Resident light unit","Integrated editing and grade","Performance reporting"]
-              },
-              {
-                k: isES?"Cómo funciona":"How it works",
-                items: isES
-                  ? ["Retainer trimestral o anual","Planeación editorial 90 días","Turnaround: 7–10 días por pieza","Dashboard de tracking","Un solo punto de contacto"]
-                  : ["Quarterly or annual retainer","90-day editorial planning","Turnaround: 7–10 days per piece","Tracking dashboard","Single point of contact"]
-              },
-            ].map((col, i) => (
-              <div key={i} style={sv.aoCol}>
-                <div style={sv.aoColTitle}>{col.k}</div>
-                <ul style={sv.aoList}>
-                  {col.items.map((it, j) => (
-                    <li key={j} style={sv.aoItem}><span style={sv.aoBullet}>·</span>{it}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div style={sv.aoStats}>
-          <div style={{maxWidth:1440, margin:"0 auto", display:"grid", gridTemplateColumns:"repeat(4, 1fr)"}}>
-            {[
-              ["3.5x", isES?"Crecimiento Always-On":"Always-On growth"],
-              ["+100", isES?"Entregables / rodaje":"Deliverables / shoot"],
-              ["−60%", isES?"Costo por pieza":"Cost per piece"],
-              ["90 d.", isES?"Plan editorial":"Editorial plan"],
-            ].map(([n, l]) => (
-              <div key={l} style={sv.aoNumCell}>
-                <div style={sv.aoNumN}>{n}</div>
-                <div style={sv.aoNumL}>{l}</div>
-              </div>
-            ))}
-          </div>
+          <h3 style={sv.subFormatTitle}>{isES?"Piezas nativas digitales":"Digital-native pieces"}</h3>
+          <p style={sv.subFormatBody}>
+            {isES
+              ? "Reels, TikToks, Shorts, banners, social. Verticales planeados verticales, no recortados."
+              : "Reels, TikToks, Shorts, banners, social. Verticals planned vertical, not cropped."}
+          </p>
         </div>
       </section>
 
-      {/* ========= STANDARD SERVICES LIST ========= */}
-      <section style={sv.listHead}>
-        <div style={{maxWidth:1440, margin:"0 auto"}}>
-          <div className="eyebrow" style={{opacity:0.6, marginBottom:12}}>{isES?"Pilares de producción":"Production pillars"}</div>
-          <h2 style={sv.listTitle}>{isES?"Todo lo demás":"Everything else"}</h2>
+      {/* ========= 02 · CREATIVIDAD ========= */}
+      <section style={{...sv.pillarRoot, background:"var(--vino)", color:"var(--nuez)"}}>
+        <div style={sv.pillarHead}>
+          <div className="eyebrow" style={{color:"var(--rosa)", marginBottom:20}}>
+            <span className="hairline" style={{marginRight:10, background:"var(--rosa)"}} />
+            02, {isES?"Pilar":"Pillar"}
+          </div>
+          <h2 style={sv.pillarTitle}>{isES?"Creatividad":"Creative"}<span style={{color:"var(--rosa)"}}>.</span></h2>
+          <p style={sv.pillarLede}>
+            {isES
+              ? "Desarrollamos campañas, guiones y conceptos creativos. La idea antes que la cámara."
+              : "We develop campaigns, scripts and creative concepts. The idea before the camera."}
+          </p>
+          <p style={sv.pillarBody}>
+            {isES
+              ? "Entramos a la mesa antes del brief. Concepto, narrativa, guión y dirección estratégica. La pieza se piensa antes de filmarse."
+              : "We sit down before the brief. Concept, narrative, script and strategic direction. The piece is thought before it's shot."}
+          </p>
         </div>
-      </section>
-      <section style={sv.list}>
-        <div style={{maxWidth:1440, margin:"0 auto"}}>
-          {services.map((s, i) => (
-            <div key={s.id} style={sv.row}>
-              <div style={sv.rowN}>{`0${i+1}`.slice(-2)}</div>
-              <div style={sv.rowT}>
-                <h3 style={sv.rowTitle}>{s.t}</h3>
-                <p style={sv.rowDesc}>{s.d}</p>
-              </div>
-              <div style={{...sv.rowImg, background:s.frame.bg}} className="grain">
-                <span style={{fontFamily:"var(--font-display)", fontSize:72, color:"var(--nuez)"}}>{s.frame.word}</span>
-              </div>
+        <div style={sv.pillarItems}>
+          {[
+            { t: isES?"Campañas":"Campaigns", d: isES?"Concepto rector y arquitectura de campaña multi-pieza.":"Governing concept and multi-piece campaign architecture."},
+            { t: isES?"Guiones":"Scripts", d: isES?"Escritura y desarrollo narrativo para comercial, ficción y branded.":"Writing and narrative development for commercial, fiction and branded."},
+            { t: isES?"Conceptos creativos":"Creative concepts", d: isES?"Big ideas, plataformas de marca, treatments visuales.":"Big ideas, brand platforms, visual treatments."},
+            { t: isES?"Dirección estratégica":"Strategic direction", d: isES?"Traducimos objetivos de marca en arquitectura de proyecto.":"We translate brand objectives into project architecture."},
+          ].map((it, i) => (
+            <div key={it.t} style={sv.pillarItem}>
+              <div style={{...sv.pillarItemN, color:"var(--rosa)"}}>{String(i+1).padStart(2,"0")}</div>
+              <div style={sv.pillarItemT}>{it.t}</div>
+              <div style={sv.pillarItemD}>{it.d}</div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* ========= 03 · PUBLICIDAD ========= */}
+      <section style={{...sv.pillarRoot, background:"var(--nuez)", color:"var(--negro)"}}>
+        <div style={sv.pillarHead}>
+          <div className="eyebrow" style={{color:"var(--vino)", marginBottom:20}}>
+            <span className="hairline" style={{marginRight:10, background:"var(--vino)"}} />
+            03, {isES?"Pilar":"Pillar"}
+          </div>
+          <h2 style={{...sv.pillarTitle, color:"var(--negro)"}}>{isES?"Cine publicitario":"Commercial cinema"}<span style={{color:"var(--vino)"}}>.</span></h2>
+          <p style={{...sv.pillarLede, color:"var(--negro)", opacity:0.95}}>
+            {isES
+              ? "TVC, brand films, documentales de marca, cortometrajes publicitarios. Cuidados como cine, cámara, luz y actuación al nivel de festival."
+              : "TVC, brand films, branded documentary, short-form advertising. Treated as cinema, camera, light and performance at festival level."}
+          </p>
+          <p style={{...sv.pillarBody, color:"var(--negro)", opacity:0.85}}>
+            {isES
+              ? "Cada brief se trabaja como un guión. La diferencia entre un commercial que se olvida y uno que se queda está en quién toma cada decisión."
+              : "Each brief is worked like a screenplay. The difference between a forgettable commercial and one that stays is in who makes each decision."}
+          </p>
+        </div>
+        <div style={sv.pillarItems}>
+          {[
+            { t: "TVC", d: isES?"Spots de 15, 30, 60 segundos. Comerciales de TV abierta, cable y streaming. La forma clásica del oficio.":"15, 30, 60-second spots. Open TV, cable and streaming commercials. The classic form of the craft."},
+            { t: isES?"Brand films":"Brand films", d: isES?"Piezas de marca de 2 a 5 minutos. Para platforms propias, lanzamientos y posicionamiento.":"Brand pieces from 2 to 5 minutes. For owned platforms, launches and positioning."},
+            { t: isES?"Documental de marca":"Branded documentary", d: isES?"Documental encargado por marca. Cuando lo que la marca quiere contar requiere tiempo real, no actuación.":"Brand-commissioned documentary. When what the brand wants to tell requires real time, not acting."},
+            { t: isES?"Cortometraje publicitario":"Short-form advertising", d: isES?"Pieza corta con ambición de festival. Distribución de marca, lenguaje de cortometraje.":"Short with festival ambition. Brand distribution, short-film language."},
+          ].map((it, i) => (
+            <div key={it.t} style={sv.pillarItem}>
+              <div style={{...sv.pillarItemN, color:"var(--vino)"}}>{String(i+1).padStart(2,"0")}</div>
+              <div style={{...sv.pillarItemT, color:"var(--negro)"}}>{it.t}</div>
+              <div style={{...sv.pillarItemD, color:"var(--negro)", opacity:0.7}}>{it.d}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ========= 04 · POST-PRODUCCIÓN ========= */}
+      <section style={{...sv.pillarRoot, background:"var(--olivo)", color:"var(--nuez)"}}>
+        <div style={sv.pillarHead}>
+          <div className="eyebrow" style={{color:"var(--rosa)", marginBottom:20}}>
+            <span className="hairline" style={{marginRight:10, background:"var(--rosa)"}} />
+            04, {isES?"Pilar":"Pillar"}
+          </div>
+          <h2 style={sv.pillarTitle}>{isES?"Post-producción":"Post-production"}<span style={{color:"var(--rosa)"}}>.</span></h2>
+          <p style={sv.pillarLede}>
+            {isES
+              ? "Edición, color, sound design, VFX. Talento de largometraje y campañas globales. Somos estudio de AI."
+              : "Editing, color, sound design, VFX. Feature-film and global-campaign talent. We are an AI studio."}
+          </p>
+          <p style={sv.pillarBody}>
+            {isES
+              ? "Decisión creativa, no logística. La integración entre rodaje y post sostiene la autoría hasta el último frame."
+              : "Creative decision, not logistical. The integration between shoot and post holds authorship to the last frame."}
+          </p>
+        </div>
+        <div style={sv.pillarItems}>
+          {[
+            { t: isES?"Edición":"Editing", d: isES?"Editores que vienen de cine de festival. Ritmo, narrativa y restraint cuando la pieza lo necesita.":"Editors who come from festival cinema. Pacing, narrative and restraint when the piece needs it."},
+            { t: "Color", d: isES?"Grade con coloristas de Company 3 y Mute. Look book detallado por proyecto, calibración para distintas plataformas.":"Grade with Company 3 and Mute colorists. Detailed look book per project, calibration for different platforms."},
+            { t: "Sound design", d: isES?"Diseño sonoro y mezcla. Atmósfera, foley y voz cuidados como si fueran parte del cuadro, porque lo son.":"Sound design and mix. Atmosphere, foley and voice cared for as if part of the frame, because they are."},
+            { t: "VFX", d: isES?"VFX integrados. Limpieza, extensión de set, composición. La regla: si el espectador lo nota, fallamos.":"Integrated VFX. Clean-up, set extension, comp. The rule: if the viewer notices, we failed."},
+          ].map((it, i) => (
+            <div key={it.t} style={sv.pillarItem}>
+              <div style={sv.pillarItemN}>{String(i+1).padStart(2,"0")}</div>
+              <div style={sv.pillarItemT}>{it.t}</div>
+              <div style={sv.pillarItemD}>{it.d}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ========= 05 · FOTO FIJA ========= */}
+      <section style={{...sv.pillarRoot, background:"var(--negro-500)", color:"var(--nuez)"}}>
+        <div style={sv.pillarHead}>
+          <div className="eyebrow" style={{color:"var(--rosa)", marginBottom:20}}>
+            <span className="hairline" style={{marginRight:10, background:"var(--rosa)"}} />
+            05, {isES?"Pilar":"Pillar"}
+          </div>
+          <h2 style={sv.pillarTitle}>{isES?"Foto fija":"Stills"}<span style={{color:"var(--rosa)"}}>.</span></h2>
+          <p style={sv.pillarLede}>
+            {isES
+              ? "Fotografía editorial, key visuals, retrato de talento. La pieza que define la campaña antes que el video."
+              : "Editorial stills, key visuals, talent portraiture. The piece that defines the campaign before the video."}
+          </p>
+          <p style={sv.pillarBody}>
+            {isES
+              ? "Disciplina propia, con su dirección y luz. Fotógrafos del editorial y el retrato."
+              : "Its own discipline, with its own direction and light. Photographers from editorial and portrait."}
+          </p>
         </div>
       </section>
     </div>
@@ -753,54 +916,123 @@ function ServicesPage({ lang, go, openProject }) {
 }
 const sv = {
   head: { padding:"100px 40px 80px", borderBottom:"1px solid var(--hairline)" },
-  title: { fontFamily:"var(--font-display)", fontSize:"clamp(56px, 9vw, 128px)", lineHeight:0.92, letterSpacing:"-0.03em", margin:"0 0 32px", textTransform:"uppercase" },
+  title: { fontFamily:"var(--font-display)", fontSize:"clamp(28px, 4.5vw, 64px)", lineHeight:0.92, letterSpacing:"-0.03em", margin:"0 0 32px", textTransform:"uppercase" },
   kicker: { fontFamily:"var(--font-serif)", fontSize:"clamp(18px, 1.5vw, 22px)", lineHeight:1.5, color:"var(--fg-2)", maxWidth:700, margin:0 },
 
-  /* Content Day block */
-  signatureCD: { background:"var(--negro)", color:"var(--nuez)" },
-  signInner: { padding:"120px 40px 80px", maxWidth:1440, margin:"0 auto", display:"grid", gridTemplateColumns:"1.4fr 1fr", gap:80, alignItems:"start" },
-  signLeft: {},
-  signTitle: { fontFamily:"var(--font-display)", fontSize:"clamp(56px, 8vw, 128px)", lineHeight:0.88, letterSpacing:"-0.03em", margin:"0 0 32px", textTransform:"uppercase", color:"var(--nuez)" },
-  signKicker: { fontFamily:"var(--font-serif)", fontSize:"clamp(18px, 1.5vw, 22px)", lineHeight:1.5, color:"var(--nuez)", opacity:0.88, maxWidth:640, margin:"0 0 56px", textWrap:"pretty" },
-  signSteps: { display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:32 },
+  /* Pillar, shared shell for every service section */
+  pillarRoot: {
+    position:"relative",
+    background:"var(--negro)",
+    color:"var(--nuez)",
+    padding:"120px 40px 140px",
+  },
+  pillarHead: { maxWidth:1100, margin:"0 auto 64px" },
+  pillarTitle: {
+    fontFamily:"var(--font-display)",
+    fontSize:"clamp(56px, 8vw, 128px)",
+    lineHeight:0.88,
+    letterSpacing:"-0.03em",
+    margin:"0 0 32px",
+    textTransform:"uppercase",
+    color:"var(--nuez)",
+  },
+  pillarLede: {
+    fontFamily:"var(--font-serif)",
+    fontStyle:"italic",
+    fontSize:"clamp(18px, 1.6vw, 24px)",
+    lineHeight:1.45,
+    margin:"0 0 28px",
+    maxWidth:760,
+    textWrap:"pretty",
+  },
+  pillarBody: {
+    fontFamily:"var(--font-serif)",
+    fontSize:"clamp(16px, 1.2vw, 19px)",
+    lineHeight:1.7,
+    color:"var(--nuez)",
+    opacity:0.82,
+    margin:0,
+    maxWidth:760,
+    textWrap:"pretty",
+  },
+  pillarItems: {
+    maxWidth:1100, margin:"0 auto",
+    display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:"40px 64px",
+  },
+  pillarItem: { paddingTop:24, borderTop:"1px solid rgba(244,240,230,0.2)" },
+  pillarItemN: { fontFamily:"var(--font-mono)", fontSize:11, letterSpacing:"0.2em", color:"var(--rosa)", marginBottom:14 },
+  pillarItemT: { fontFamily:"var(--font-display)", fontSize:"clamp(22px, 2vw, 30px)", lineHeight:1.1, letterSpacing:"-0.01em", textTransform:"uppercase", margin:"0 0 10px" },
+  pillarItemD: { fontFamily:"var(--font-serif)", fontSize:15, lineHeight:1.55, color:"var(--nuez)", opacity:0.78, textWrap:"pretty" },
+
+  /* Sub-format: Content Day inside Digital */
+  subFormat: {
+    maxWidth:1440, margin:"0 auto",
+    padding:"40px 0 0",
+    borderTop:"1px solid rgba(244,240,230,0.15)",
+    marginTop:32,
+  },
+  subFormatHead: { maxWidth:1100, margin:"0 auto 56px", paddingTop:48 },
+  subFormatTitle: {
+    fontFamily:"var(--font-display)",
+    fontSize:"clamp(40px, 5vw, 72px)",
+    lineHeight:0.92,
+    letterSpacing:"-0.025em",
+    margin:"0 0 24px",
+    textTransform:"uppercase",
+    color:"var(--nuez)",
+  },
+  subFormatBody: {
+    fontFamily:"var(--font-serif)",
+    fontSize:"clamp(17px, 1.4vw, 20px)",
+    lineHeight:1.5,
+    color:"var(--nuez)",
+    opacity:0.9,
+    maxWidth:760,
+    margin:"0 0 20px",
+    textWrap:"pretty",
+  },
+  subFormatBody2: {
+    fontFamily:"var(--font-serif)",
+    fontStyle:"italic",
+    fontSize:"clamp(16px, 1.3vw, 18px)",
+    lineHeight:1.55,
+    maxWidth:760,
+    margin:0,
+    textWrap:"pretty",
+  },
+  signSteps: { maxWidth:1100, margin:"0 auto", display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:"32px 64px", marginBottom:56 },
   stepCard: { paddingTop:20, borderTop:"1px solid rgba(244,240,230,0.2)" },
   stepN: { fontFamily:"var(--font-mono)", fontSize:11, letterSpacing:"0.2em", color:"var(--rosa)", marginBottom:16 },
   stepT: { fontFamily:"var(--font-display)", fontSize:"clamp(20px, 1.6vw, 24px)", lineHeight:1.1, textTransform:"uppercase", margin:"0 0 10px" },
   stepD: { fontFamily:"var(--font-serif)", fontSize:14, lineHeight:1.55, color:"var(--nuez)", opacity:0.75, textWrap:"pretty" },
-  signNumbers: { display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:0, border:"1px solid rgba(244,240,230,0.15)" },
-  numCell: { padding:"40px 24px", borderRight:"1px solid rgba(244,240,230,0.15)", borderBottom:"1px solid rgba(244,240,230,0.15)", textAlign:"center" },
-  numN: { fontFamily:"var(--font-display)", fontSize:"clamp(40px, 4.5vw, 64px)", color:"var(--rosa)", lineHeight:1 },
+  cdNumbers: { maxWidth:1100, margin:"0 auto 56px", display:"grid", gridTemplateColumns:"repeat(4, 1fr)", gap:0, border:"1px solid rgba(244,240,230,0.15)" },
+  cdNumCell: { padding:"32px 20px", borderRight:"1px solid rgba(244,240,230,0.15)", textAlign:"center" },
+  numN: { fontFamily:"var(--font-display)", fontSize:"clamp(36px, 4vw, 56px)", color:"var(--rosa)", lineHeight:1 },
   numL: { fontFamily:"var(--font-sans)", fontSize:10, letterSpacing:"0.22em", textTransform:"uppercase", color:"var(--nuez)", opacity:0.7, marginTop:10 },
+  cdCases: { maxWidth:1100, margin:"0 auto" },
   caseGrid: { display:"grid", gridTemplateColumns:"repeat(3, 1fr)", gap:24 },
 
-  /* Always On block */
-  signatureAO: { background:"var(--rosa)", color:"var(--vino)" },
-  aoInner: { padding:"120px 40px 80px", maxWidth:1440, margin:"0 auto", display:"grid", gridTemplateColumns:"1.3fr 1fr", gap:80, alignItems:"start" },
-  aoLeft: {},
-  aoTitle: { fontFamily:"var(--font-display)", fontSize:"clamp(72px, 11vw, 180px)", lineHeight:0.85, letterSpacing:"-0.04em", margin:"0 0 32px", textTransform:"uppercase", color:"var(--vino)" },
-  aoKicker: { fontFamily:"var(--font-serif)", fontSize:"clamp(18px, 1.5vw, 22px)", lineHeight:1.5, color:"var(--vino)", maxWidth:620, margin:"0 0 24px", textWrap:"pretty" },
-  aoKicker2: { fontFamily:"var(--font-serif)", fontStyle:"italic", fontSize:"clamp(17px, 1.4vw, 20px)", lineHeight:1.55, color:"var(--vino)", opacity:0.85, maxWidth:620, margin:0, textWrap:"pretty" },
-  aoCols: { display:"grid", gridTemplateColumns:"1fr 1fr", gap:40 },
+  /* Sub-format: Always On inside Digital (rosa card on negro section) */
+  subFormatAO: {
+    maxWidth:1200,
+    margin:"96px auto 0",
+    padding:"72px 56px",
+    background:"var(--rosa)",
+    color:"var(--vino)",
+  },
+  aoCols: { display:"grid", gridTemplateColumns:"1fr 1fr", gap:40, maxWidth:1100, margin:"40px auto 56px" },
   aoCol: {},
   aoColTitle: { fontFamily:"var(--font-sans)", fontSize:11, letterSpacing:"0.22em", textTransform:"uppercase", color:"var(--vino)", marginBottom:20, paddingBottom:12, borderBottom:"1px solid var(--vino)" },
   aoList: { listStyle:"none", padding:0, margin:0, display:"flex", flexDirection:"column", gap:12 },
   aoItem: { fontFamily:"var(--font-serif)", fontSize:15, lineHeight:1.45, color:"var(--vino)", display:"flex", gap:10, textWrap:"pretty" },
   aoBullet: { fontFamily:"var(--font-display)", color:"var(--vino)", opacity:0.6 },
-  aoStats: { padding:"0 40px 120px", background:"var(--rosa)" },
-  aoNumCell: { padding:"40px 24px", borderRight:"1px solid rgba(58,14,14,0.2)", borderTop:"1px solid rgba(58,14,14,0.3)", textAlign:"center" },
-  aoNumN: { fontFamily:"var(--font-display)", fontSize:"clamp(40px, 4.5vw, 64px)", color:"var(--vino)", lineHeight:1 },
+  aoStatsRow: { display:"grid", gridTemplateColumns:"repeat(4, 1fr)", borderTop:"1px solid rgba(58,14,14,0.3)" },
+  aoNumCell: { padding:"32px 20px", borderRight:"1px solid rgba(58,14,14,0.2)", textAlign:"center" },
+  aoNumN: { fontFamily:"var(--font-display)", fontSize:"clamp(36px, 4vw, 56px)", color:"var(--vino)", lineHeight:1 },
   aoNumL: { fontFamily:"var(--font-sans)", fontSize:10, letterSpacing:"0.22em", textTransform:"uppercase", color:"var(--vino)", opacity:0.7, marginTop:10 },
 
-  /* Standard list */
-  listHead: { padding:"120px 40px 40px", borderTop:"1px solid var(--hairline)" },
-  listTitle: { fontFamily:"var(--font-display)", fontSize:"clamp(44px, 6vw, 80px)", lineHeight:0.95, letterSpacing:"-0.02em", margin:"0", textTransform:"uppercase" },
-  list: { padding:"20px 40px 120px" },
-  row: { display:"grid", gridTemplateColumns:"80px 1fr 320px", gap:48, padding:"56px 0", borderTop:"1px solid var(--border)", alignItems:"center" },
-  rowN: { fontFamily:"var(--font-mono)", fontSize:13, letterSpacing:"0.2em", color:"var(--accent)" },
-  rowT: {},
-  rowTitle: { fontFamily:"var(--font-display)", fontSize:"clamp(40px, 5vw, 68px)", lineHeight:0.98, letterSpacing:"-0.02em", margin:"0 0 16px", textTransform:"uppercase" },
-  rowDesc: { fontFamily:"var(--font-serif)", fontSize:17, lineHeight:1.55, color:"var(--fg-2)", maxWidth:560, margin:0 },
-  rowImg: { position:"relative", aspectRatio:"4/3", display:"flex", alignItems:"center", justifyContent:"center", overflow:"hidden" },
+  /* Plain sub-format inside Digital */
+  subFormatPlain: { maxWidth:1100, margin:"96px auto 0", paddingTop:48, borderTop:"1px solid rgba(244,240,230,0.15)" },
 };
 
 /* =========== JOURNAL HUB =========== */
@@ -814,8 +1046,8 @@ function JournalPage({ lang, openArticle }) {
           <h1 style={jp.title}>{lang==="es"?"Diario":"Journal"}</h1>
           <p style={jp.kicker}>
             {lang==="es"
-              ? "Notas de campo desde Puebla 403. Cada mes escribe un miembro distinto del equipo."
-              : "Field notes from Puebla 403. A different team member writes each month."}
+              ? "Notas desde el estudio."
+              : "Notes from the studio."}
           </p>
         </div>
       </section>
@@ -861,7 +1093,7 @@ function JournalPage({ lang, openArticle }) {
 }
 const jp = {
   head: { padding:"100px 40px 80px", borderBottom:"1px solid var(--hairline)" },
-  title: { fontFamily:"var(--font-display)", fontSize:"clamp(56px, 9vw, 128px)", lineHeight:0.92, letterSpacing:"-0.03em", margin:"0 0 32px", textTransform:"uppercase" },
+  title: { fontFamily:"var(--font-display)", fontSize:"clamp(28px, 4.5vw, 64px)", lineHeight:0.92, letterSpacing:"-0.03em", margin:"0 0 32px", textTransform:"uppercase" },
   kicker: { fontFamily:"var(--font-serif)", fontSize:"clamp(18px, 1.5vw, 22px)", lineHeight:1.5, color:"var(--fg-2)", maxWidth:640, margin:0 },
   list: { padding:"60px 40px 140px" },
   row: { display:"grid", gridTemplateColumns:"minmax(280px, 420px) 1fr", gap:48, padding:"48px 0", borderTop:"1px solid var(--border)", textDecoration:"none", color:"inherit", alignItems:"start" },
@@ -1027,7 +1259,7 @@ const ap = {
 /* =========== CONTACT =========== */
 function ContactPage({ lang }) {
   const isES = lang === "es";
-  const [form, setForm] = React.useState({ name:"", brand:"", type:"", deadline:"", budget:"", message:"" });
+  const [form, setForm] = React.useState({ name:"", email:"", message:"" });
   const [sent, setSent] = React.useState(false);
   const handle = (k, v) => setForm(f => ({...f, [k]: v}));
   const submit = (e) => { e.preventDefault(); setSent(true); };
@@ -1036,20 +1268,15 @@ function ContactPage({ lang }) {
       <section style={cp.head}>
         <div style={{maxWidth:1440, margin:"0 auto", display:"grid", gridTemplateColumns:"1.1fr 1fr", gap:64, alignItems:"end"}}>
           <div>
-            <div className="eyebrow" style={{opacity:0.6, marginBottom:12}}>Roma Norte · CDMX</div>
+            <div className="eyebrow" style={{opacity:0.6, marginBottom:12}}>Ciudad de México</div>
             <h1 style={cp.title}>{isES?"Escríbenos.":"Write to us."}</h1>
-            <p style={cp.kicker}>
-              {isES
-                ? "Respondemos todo — desde briefs con deadline esta semana hasta conversaciones sin apuro. Axel contesta en menos de 24 horas."
-                : "We answer everything — from briefs due this week to unrushed conversations. Axel replies within 24 hours."}
-            </p>
-          </div>
+                      </div>
           <div>
-            <a href="mailto:axel@selvastudio.mx" style={cp.email}>axel@selvastudio.mx</a>
+            <a href="mailto:info@selvastudio.mx" style={cp.email}>info@selvastudio.mx</a>
             <div style={cp.phones}>
               <div><span className="eyebrow" style={{opacity:0.55, marginRight:12}}>TEL</span>+52 55 1959 6185</div>
               <div><span className="eyebrow" style={{opacity:0.55, marginRight:12}}>IG</span>@selvastudiomx</div>
-              <div><span className="eyebrow" style={{opacity:0.55, marginRight:12}}>DIR</span>Puebla 403, Roma Norte</div>
+              <div><span className="eyebrow" style={{opacity:0.55, marginRight:12}}>DIR</span>Ciudad de México</div>
             </div>
           </div>
         </div>
@@ -1068,12 +1295,9 @@ function ContactPage({ lang }) {
               </p>
             </div>
           ) : (
-            <form onSubmit={submit} style={cp.formBody}>
+            <form onSubmit={submit} style={cp.formBody} action="mailto:info@selvastudio.mx" method="post" encType="text/plain">
               <Field label={isES?"Nombre":"Name"} v={form.name} onChange={v=>handle("name", v)} />
-              <Field label={isES?"Marca":"Brand"} v={form.brand} onChange={v=>handle("brand", v)} />
-              <Field label={isES?"Tipo de proyecto":"Project type"} v={form.type} onChange={v=>handle("type", v)} placeholder={isES?"Comercial · Brand film · Digital · Content Day":"Commercial · Brand film · Digital · Content Day"}/>
-              <Field label={isES?"Deadline":"Deadline"} v={form.deadline} onChange={v=>handle("deadline", v)} />
-              <Field label={isES?"Rango presupuesto":"Budget range"} v={form.budget} onChange={v=>handle("budget", v)} placeholder="USD / MXN" />
+              <Field label="Email" v={form.email} onChange={v=>handle("email", v)} />
               <Field label={isES?"Mensaje":"Message"} v={form.message} onChange={v=>handle("message", v)} textarea />
               <button type="submit" style={cp.submit}>
                 {isES?"Enviar brief":"Send brief"} <span style={{color:"var(--accent)"}}>→</span>
@@ -1103,7 +1327,7 @@ function Field({ label, v, onChange, placeholder, textarea }) {
 }
 const cp = {
   head: { padding:"100px 40px", borderBottom:"1px solid var(--hairline)" },
-  title: { fontFamily:"var(--font-display)", fontSize:"clamp(56px, 9vw, 128px)", lineHeight:0.9, letterSpacing:"-0.03em", margin:"0 0 28px", textTransform:"uppercase" },
+  title: { fontFamily:"var(--font-display)", fontSize:"clamp(28px, 4.5vw, 64px)", lineHeight:0.9, letterSpacing:"-0.03em", margin:"0 0 28px", textTransform:"uppercase", color:"var(--rosa)" },
   kicker: { fontFamily:"var(--font-serif)", fontSize:"clamp(18px, 1.5vw, 22px)", lineHeight:1.5, color:"var(--fg-2)", maxWidth:560, margin:0 },
   email: { fontFamily:"var(--font-display)", fontSize:"clamp(32px, 4vw, 56px)", color:"var(--accent)", borderBottom:"2px solid var(--accent)", display:"inline-block", paddingBottom:4, textDecoration:"none" },
   phones: { marginTop:28, display:"flex", flexDirection:"column", gap:10, fontFamily:"var(--font-sans)", fontSize:14 },

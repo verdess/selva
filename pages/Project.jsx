@@ -8,12 +8,12 @@ function ProjectPage({ id, lang, openProject, go }) {
 
   return (
     <div className="page-fade">
-      {/* Hero full-bleed — Vimeo if available, otherwise poster silhouette */}
+      {/* Hero full-bleed, Vimeo if available, otherwise poster silhouette */}
       <section style={pp.hero}>
         {p.vimeo ? (
           <div style={pp.heroVideoWrap}>
             <iframe
-              src={`https://player.vimeo.com/video/${p.vimeo.id}${p.vimeo.h ? "/" + p.vimeo.h : ""}?background=1&autoplay=1&loop=1&byline=0&title=0&portrait=0&controls=0&muted=1&dnt=1`}
+              src={`https://player.vimeo.com/video/${p.vimeo.id}${p.vimeo.h ? "/" + p.vimeo.h : ""}?background=1&autoplay=1&loop=1&byline=0&title=0&portrait=0&controls=0&muted=1&dnt=1&quality=540p`}
               title={p.title[lang]}
               frameBorder="0"
               allow="autoplay; fullscreen; picture-in-picture"

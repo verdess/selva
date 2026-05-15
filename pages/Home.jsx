@@ -1,6 +1,6 @@
-// Selva Studio — Home page. Seven folds per brief.
+// Selva Studio, Home page. Seven folds per brief.
 
-/* ---------- Fold 1: Hero — Vimeo reel (selvastudio.mx institutional reel) ---------- */
+/* ---------- Fold 1: Hero, Vimeo reel (selvastudio.mx institutional reel) ---------- */
 function HeroReel({ sound, setSound, tweaks, lang }) {
   const treatment = tweaks.hero || "video";
   const heroVimeo = window.SELVA_DATA.VIMEO_HERO || { id: "1117293706" };
@@ -24,6 +24,15 @@ function HeroReel({ sound, setSound, tweaks, lang }) {
         </span>
       </div>
 
+      {/* H1, SEO landmark for the home page. Visually hidden but
+          discoverable by search engines and assistive tech. Contains the
+          target keywords: "estudio audiovisual", "cine publicitario", "CDMX". */}
+      <h1 style={hero.h1}>
+        {lang === "es"
+          ? "Selva Studio, Estudio audiovisual de cine publicitario en CDMX."
+          : "Selva Studio, Audiovisual studio of commercial cinema in Mexico City."}
+      </h1>
+
       <button onClick={()=>setSound(!sound)} style={hero.sound} aria-pressed={sound}>
         <span style={{opacity:sound?1:0.55}}>{sound ? "SOUND ON" : "SOUND OFF"}</span>
         <span style={{width:7, height:7, borderRadius:"50%", background: sound ? "var(--rosa)" : "var(--nuez)", boxShadow:"0 0 0 1px rgba(244,240,230,.4)", transition:"background 200ms"}} />
@@ -43,24 +52,59 @@ function HeroReel({ sound, setSound, tweaks, lang }) {
   );
 }
 
-/* Vimeo background — full-bleed, autoplay, loop, muted/unmuted via sound toggle.
-   Uses Vimeo player-params so the UI is completely hidden.  */
+/* Vimeo background, full-bleed, autoplay, loop, muted/unmuted via sound toggle.
+   Uses Vimeo player-params so the UI is completely hidden. Lazy-mounts the iframe
+   one tick after mount so the rest of the home renders first; preserves a poster
+   frame from vumbnail.com so the user sees a still image immediately. */
 function VimeoBackground({ vimeoId, sound }) {
+  const [mounted, setMounted] = React.useState(false);
+  const [ready, setReady] = React.useState(false);
+
+  React.useEffect(() => {
+    // Defer iframe mount slightly so the first paint is the poster, not a
+    // pending network load. Two animation frames is enough to let Home paint.
+    let raf1 = requestAnimationFrame(() => {
+      let raf2 = requestAnimationFrame(() => setMounted(true));
+      return () => cancelAnimationFrame(raf2);
+    });
+    return () => cancelAnimationFrame(raf1);
+  }, []);
+
+  // Vimeo's quality param: start at 540p for fastest first-frame.
+  // The player will auto-bump to higher quality once buffered.
   const src =
     `https://player.vimeo.com/video/${vimeoId}` +
-    `?background=1&autoplay=1&loop=1&byline=0&title=0&portrait=0&controls=0&muted=${sound ? 0 : 1}&dnt=1`;
+    `?background=1&autoplay=1&loop=1&byline=0&title=0&portrait=0&controls=0` +
+    `&muted=${sound ? 0 : 1}&dnt=1&quality=360p&playsinline=1`;
+  const poster = `https://vumbnail.com/${vimeoId}_large.jpg`;
+
   return (
     <div style={hero.reelStage}>
+      {/* Instant poster, visible until iframe is ready. */}
+      <img
+        src={poster}
+        alt="Selva Studio reel, poster"
+        loading="eager"
+        style={{
+          ...hero.posterImg,
+          opacity: ready ? 0 : 1,
+          transition: "opacity 600ms ease-out",
+        }}
+      />
       <div style={hero.videoWrap}>
-        <iframe
-          key={sound ? "on" : "off"}
-          src={src}
-          title="Selva Studio reel"
-          frameBorder="0"
-          allow="autoplay; fullscreen; picture-in-picture"
-          allowFullScreen
-          style={hero.videoFrame}
-        />
+        {mounted && (
+          <iframe
+            key={sound ? "on" : "off"}
+            src={src}
+            title="Selva Studio reel"
+            frameBorder="0"
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowFullScreen
+            loading="lazy"
+            onLoad={() => setReady(true)}
+            style={hero.videoFrame}
+          />
+        )}
       </div>
       <div style={hero.vignette} />
       <div style={hero.bottomScrim} />
@@ -73,25 +117,25 @@ function VimeoBackground({ vimeoId, sound }) {
 // Stills loop: 4 cross-fading film-stills evoking real frames.
 function StillsLoop() {
   const stills = [
-    // desert dawn — Toyota-like
+    // desert dawn, Toyota-like
     { name:"desert", layers: [
       "radial-gradient(ellipse 90% 60% at 50% 80%, #8a5a2e 0%, transparent 60%)",
       "radial-gradient(ellipse 60% 50% at 60% 35%, rgba(255,200,140,0.4) 0%, transparent 60%)",
       "linear-gradient(180deg, #1a0f08 0%, #2c1a0f 40%, #61371a 70%, #8a5a2e 100%)",
     ]},
-    // humid jungle night — Apple-like
+    // humid jungle night, Apple-like
     { name:"jungle", layers: [
       "radial-gradient(ellipse 80% 55% at 30% 60%, rgba(40,80,55,0.7) 0%, transparent 60%)",
       "radial-gradient(ellipse 50% 40% at 75% 45%, rgba(200,140,100,0.25) 0%, transparent 60%)",
       "linear-gradient(180deg, #050a06 0%, #0d1a10 50%, #1a2d1d 100%)",
     ]},
-    // kitchen warm interior — Amazon Casa-like
+    // kitchen warm interior, Amazon Casa-like
     { name:"kitchen", layers: [
       "radial-gradient(ellipse 70% 50% at 55% 50%, rgba(230,150,80,0.55) 0%, transparent 60%)",
       "radial-gradient(ellipse 40% 30% at 25% 30%, rgba(240,200,160,0.3) 0%, transparent 60%)",
       "linear-gradient(180deg, #2b1a0f 0%, #4a2a18 60%, #6a3d22 100%)",
     ]},
-    // rosa neon city — Mercado Pago-like
+    // rosa neon city, Mercado Pago-like
     { name:"city", layers: [
       "radial-gradient(ellipse 70% 60% at 40% 55%, rgba(243,174,180,0.45) 0%, transparent 60%)",
       "radial-gradient(ellipse 40% 30% at 70% 30%, rgba(102,69,69,0.6) 0%, transparent 60%)",
@@ -146,10 +190,15 @@ const hero = {
     overflow:"hidden", color:"var(--nuez)",
   },
   reelStage: { position:"absolute", inset:0, background:"#050505", overflow:"hidden" },
+  posterImg: {
+    position:"absolute", inset:0, width:"100%", height:"100%",
+    objectFit:"cover", display:"block", zIndex:1,
+    filter:"saturate(0.92) brightness(0.88)",
+  },
   videoWrap: {
     position:"absolute",
     top:"50%", left:"50%",
-    // Force a 16:9 iframe that always covers the viewport — ours is fixed-height,
+    // Force a 16:9 iframe that always covers the viewport, ours is fixed-height,
     // so scale 177.77vh (16/9) up to cover the width. This is the classic bg-video trick.
     width:"max(100vw, 177.78vh)",
     height:"max(56.25vw, 100vh)",
@@ -160,6 +209,12 @@ const hero = {
   vignette: { position:"absolute", inset:0, background:"radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.55) 100%)", pointerEvents:"none" },
   bottomScrim: { position:"absolute", left:0, right:0, bottom:0, height:"35%", background:"linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.55) 80%, rgba(0,0,0,0.75) 100%)", pointerEvents:"none" },
   metaBL: { position:"absolute", left:40, bottom:40, zIndex:3, display:"flex", alignItems:"center", gap:14 },
+  h1: {
+    /* visually hidden but accessible & indexed */
+    position:"absolute", width:1, height:1, padding:0,
+    margin:-1, overflow:"hidden", clip:"rect(0,0,0,0)",
+    whiteSpace:"nowrap", border:0,
+  },
   sound: {
     position:"absolute", right:40, bottom:40, zIndex:3,
     display:"inline-flex", alignItems:"center", gap:10,
@@ -184,15 +239,17 @@ const hero = {
 function FoldManifesto({ tweaks, lang }) {
   const m = window.SELVA_DATA.copy.manifestos[tweaks.manifesto || "v1"];
   const lines = m[lang];
+  // Hide blank second line entry (e.g. v1 has empty second line in some variants).
+  const hasSecond = lines[1] && lines[1].length > 0;
   return (
     <section style={mf.root}>
       <div style={mf.eyebrow}>
         <span className="hairline" />
-        <span className="eyebrow">Manifiesto · 01</span>
+        <span className="eyebrow">MÉXICO 2026</span>
         <span className="hairline" />
       </div>
       <h2 style={mf.headline}>
-        {lines[0]}<br/><span style={{color:"var(--accent)"}}>{lines[1]}</span>
+        {lines[0]}{hasSecond && <><br/><span style={{color:"var(--accent)"}}>{lines[1]}</span></>}
       </h2>
       <div style={mf.markWrap}>
         <img src="assets/logos/pantera-nuez.png" alt="" style={{height:44, opacity:0.5}} />
@@ -267,7 +324,7 @@ function FoldWork({ lang, go, openProject }) {
     <section style={wf.root}>
       <div style={wf.head}>
         <div>
-          <div className="eyebrow" style={{opacity:0.6, marginBottom:8}}>Selected · 2024 — 2026</div>
+          <div className="eyebrow" style={{opacity:0.6, marginBottom:8}}>Selected · 2024, 2026</div>
           <h3 style={wf.title}>{lang === "es" ? "Proyectos" : "Work"}</h3>
         </div>
         <a href="#" onClick={(e)=>{e.preventDefault(); go("work");}} className="eyebrow underline-hairline" style={{alignSelf:"end"}}>
@@ -280,7 +337,7 @@ function FoldWork({ lang, go, openProject }) {
             <PosterThumb project={p} big={i===0} />
             <div style={wf.meta}>
               <div style={wf.titleSmall}>{p.title[lang]}</div>
-              <div style={wf.client}>{p.client} · Dir · {p.director} · {p.year}</div>
+              <div style={wf.client}>{p.client} · {p.year}</div>
             </div>
           </a>
         ))}
@@ -322,8 +379,8 @@ function FoldContentDay({ lang, go }) {
           </h3>
           <p style={cd.desc}>
             {lang === "es"
-              ? "Una jornada. Una locación. Cuatro, cinco, seis piezas simultáneas. El formato que desarrollamos para que una marca obtenga un paquete completo sin triplicar el presupuesto — ni perder calidad cinematográfica."
-              : "One day. One location. Four, five, six simultaneous pieces. The format we developed so a brand gets a full package without tripling the budget — or losing cinematic quality."}
+              ? "Una jornada. Una locación. Cuatro, cinco, seis piezas simultáneas. El formato que desarrollamos para que una marca obtenga un paquete completo sin triplicar el presupuesto, ni perder calidad cinematográfica."
+              : "One day. One location. Four, five, six simultaneous pieces. The format we developed so a brand gets a full package without tripling the budget, or losing cinematic quality."}
           </p>
           <a href="#" onClick={(e)=>{e.preventDefault(); go("content-day");}} style={cd.cta}>
             <span>{lang === "es" ? "Cómo funciona" : "How it works"}</span>
@@ -331,11 +388,11 @@ function FoldContentDay({ lang, go }) {
           </a>
           <div style={cd.stats}>
             <div>
-              <div style={cd.statN}>35—50%</div>
+              <div style={cd.statN}>35-50%</div>
               <div style={cd.statL}>{lang === "es" ? "Ahorro en costo total" : "Total cost savings"}</div>
             </div>
             <div>
-              <div style={cd.statN}>4—6</div>
+              <div style={cd.statN}>4-6</div>
               <div style={cd.statL}>{lang === "es" ? "Piezas por jornada" : "Pieces per day"}</div>
             </div>
             <div>
@@ -390,7 +447,7 @@ const cd = {
 /* ---------- Fold 6: Valores manifesto ---------- */
 function FoldValores({ lang }) {
   const vals = window.SELVA_DATA.copy.valores;
-  // Per-card accent treatment — alternating, high contrast
+  // Per-card accent treatment, alternating, high contrast
   const treatments = [
     { bg:"var(--rosa)",  ink:"var(--vino)",  accent:"var(--vino)",  chip:"rgba(102,69,69,0.18)" },
     { bg:"var(--vino)",  ink:"var(--rosa)",  accent:"var(--nuez)",  chip:"rgba(244,240,230,0.12)" },
@@ -413,7 +470,7 @@ function FoldValores({ lang }) {
 
       <div style={vl.head}>
         <span className="eyebrow" style={{opacity:0.6}}>
-          <span className="hairline" style={{marginRight:10}} />Manifiesto · 02
+          <span className="hairline" style={{marginRight:10}} />CÓMO TRABAJAMOS
         </span>
         <h3 style={vl.title}>
           {lang === "es"
@@ -422,8 +479,8 @@ function FoldValores({ lang }) {
         </h3>
         <p style={vl.sub}>
           {lang === "es"
-            ? "Cuatro decisiones que tomamos todos los días — cada una cambia el resultado."
-            : "Four decisions we make every day — each one changes the outcome."}
+            ? "Cuatro decisiones que tomamos todos los días, cada una cambia el resultado."
+            : "Four decisions we make every day, each one changes the outcome."}
         </p>
       </div>
 
@@ -483,7 +540,7 @@ const vl = {
 /* ---------- Fold 7: Journal ---------- */
 function FoldJournal({ lang, go, openArticle }) {
   const entries = window.SELVA_DATA.journal;
-  const [lead, ...rest] = entries;
+  const [lead, ...rest] = entries.slice(0, 3);
   return (
     <section style={jn.root}>
       {/* Subtle pantera watermark */}
@@ -529,14 +586,14 @@ function FoldJournal({ lang, go, openArticle }) {
           </a>
         )}
 
-        {/* Secondary list — single-line entries */}
+        {/* Secondary list, single-line entries */}
         <div style={jn.list}>
           {rest.map((e, i) => (
             <a key={e.id} href="#" onClick={(ev)=>{ev.preventDefault(); openArticle(e.id);}} style={jn.row}>
               <div style={jn.rowNum}>{String(i+2).padStart(2,"0")}</div>
               <div style={jn.rowDate}>{e.date[lang]}</div>
               <div style={jn.rowTitle}>{e.title[lang]}</div>
-              <div style={jn.rowAuthor}>— {e.author}</div>
+              <div style={jn.rowAuthor}>- {e.author}</div>
               <div style={jn.rowRead}>{e.readTime}</div>
               <div style={jn.rowArrow}>→</div>
             </a>
@@ -577,7 +634,7 @@ const jn = {
   },
   title: {
     fontFamily:"var(--font-display)",
-    fontSize:"clamp(56px, 9vw, 140px)",
+    fontSize:"clamp(28px, 4.5vw, 70px)",
     lineHeight:0.92,
     letterSpacing:"-0.03em",
     margin:"18px 0 20px",
@@ -641,7 +698,7 @@ const jn = {
   },
   leadTitle: {
     fontFamily:"var(--font-display)",
-    fontSize:"clamp(36px, 4.5vw, 68px)",
+    fontSize:"clamp(18px, 2.25vw, 34px)",
     lineHeight:1.02,
     letterSpacing:"-0.02em",
     textTransform:"uppercase",
